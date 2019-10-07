@@ -8,6 +8,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { typography } from '@material-ui/system';
 import TalkerChips from './TalkerChips';
 
+/*
+메소드 정리
+handleSelectRow: 분석내용이 선택되면 현재 컴포넌트의 handleSelectRow에서 부모의 onSelectRow로 해당 행의 내용(row)를 전달한다.
+*/
+
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(3, 2),
@@ -103,10 +108,11 @@ class TalkerItem extends Component {
                         >  
                       <TalkerChips/>
                       </Grid>
-
                       {/* 분석태그 end */}
+
                       </Grid>
-                    
+
+                  
                     <Grid item sm={1}></Grid>
 
                 </Grid>

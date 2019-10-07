@@ -9,6 +9,18 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 
+/*
+TalkerForm 컴포넌트
+ 사용자로부터 talker, text, analysisType 받아온다.
+*/
+/*
+메소드 정리
+shouldComponentUpdate: 부모로부터 받은 selectedBoard에 brdno가 있으면, 글 수정이므로 입력상자에 이전값을 넣어주고, 없으면, 글 삽입이므로 ''값을 넣어준다.
+                        true값을 반환하므로써 렌더링한다.
+handleSubmit: save버튼을 누르면, json형식으로 data에 저장해서 부모의 onSaveData에 data를 넘겨준다.
+              만약, 부모로부터 받은 selectedBoard에 brdno가 있으면 data의 brdno를 기존 selectedBoard의 brdno로 저장해서 넘겨준다.
+*/
+
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-class Talker extends Component {
+class TalkerForm extends Component {
   
   state = {
     talker:'',
@@ -157,9 +169,9 @@ class Talker extends Component {
                             <MenuItem  value={"morpAPI"}>morpAPI</MenuItem>
                             <MenuItem  value={"wsdAPI"}>wsdAPI</MenuItem>
                             <MenuItem  value={"wsd_polyAPI"}>wsd_polyAPI</MenuItem>
-                            <MenuItem  value={"nerAPI"}>ner</MenuItem>
-                            <MenuItem  value={"dparseAPI"}>dparse</MenuItem>
-                            <MenuItem  value={"srlAPI"}>srl</MenuItem>
+                            <MenuItem  value={"nerAPI"}>nerAPI</MenuItem>
+                            <MenuItem  value={"dparseAPI"}>dparseAPI</MenuItem>
+                            <MenuItem  value={"srlAPI"}>srlAPI</MenuItem>
 
                           </Select>
                         </FormControl>
@@ -177,11 +189,10 @@ class Talker extends Component {
                       {/* 분석하기 버튼 end */}
                     
                   </Grid>
-                      {this.talker}
-                      {this.text}
+                      
               </Paper>
               </form>
       );
   }
 }
-export default Talker;
+export default TalkerForm;

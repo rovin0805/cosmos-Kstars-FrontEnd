@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import TalkerList from './TalkerList';
+import TalkerList from './Type1/TalkerList';
 
 class App extends Component {
   render() {
