@@ -77,6 +77,7 @@ class TalkerForm extends Component {
     return true;
   }
 
+
   handleChange = (e) => {
     this.setState({
         [e.target.name]: e.target.value
@@ -153,18 +154,15 @@ class TalkerForm extends Component {
                     <Grid container spacing = {3}  item xs = {3} >
                       {/* 분석유형 선택 start */}
                       <Grid>
-                        <FormControl variant="outlined" className={classes.formControl} style={{ marginTop: 20, minWidth: 130}}>
-                          <InputLabel htmlFor="outlined-age-native-simple">
-                            분석 유형
-                          </InputLabel>
+                        <FormControl variant="outlined" className={classes.formControl} style={{ marginTop: 20, minWidth: 130,}}>
+                          
                           <Select
                             value={this.state.analysisType}
                             onChange={this.handleChange}
                             inputProps={{
                               name: 'analysisType',
-                              
+                             
                             }}
-
                             >
                             <MenuItem  value={"morpAPI"}>morpAPI</MenuItem>
                             <MenuItem  value={"wsdAPI"}>wsdAPI</MenuItem>
