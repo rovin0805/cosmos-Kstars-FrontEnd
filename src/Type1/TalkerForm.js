@@ -3,11 +3,14 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
+
+import Axios from 'axios';
+
+
 
 /*
 TalkerForm 컴포넌트
@@ -69,10 +72,7 @@ class TalkerForm extends Component {
     this.state.text = selectedBoard.text;
     this.state.analysisType = selectedBoard.analysisType;
 
-    console.log("선택된 talker:" + selectedBoard.talker);
-    console.log("선택된 text:" + selectedBoard.text);
-    console.log("선택된 analysisType:" + selectedBoard.analysisType);
-    console.log("선택된 brdno:" + selectedBoard.brdno);
+    console.log("선택된 내용: ", selectedBoard);
          
     return true;
   }
@@ -99,6 +99,9 @@ class TalkerForm extends Component {
       } 
 
       this.props.onSaveData(data); 
+
+      console.log("입력 내용: ", this.state);
+
 
   }
 

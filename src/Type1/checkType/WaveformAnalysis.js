@@ -4,8 +4,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 
+import Waveform from '../../Waveform';
+
+
+
 class WaveformAnalysis extends Component {
-  
   render() {
 
     return (
@@ -34,7 +37,7 @@ class WaveformAnalysis extends Component {
                           alignItems="stretch"
                           >  
                         <Paper >
-                          파형분석결과창부분
+                          <Waveform/>
                         </Paper>
 
                       </Grid>
