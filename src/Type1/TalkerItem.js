@@ -6,10 +6,16 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import { typography } from '@material-ui/system';
+
+import SentenceAnalysis from '../Type1/checkType/SentenceAnalysis';
+import WaveformAnalysis from '../Type1/checkType/WaveformAnalysis';
 import TalkerChips from './TalkerChips';
+// import Player from '../Player';
+
 
 /*
 메소드 정리
+handleRemove: 삭제버튼이 onClick되면 현재 컴포넌트의 handleRemove에서 부모의 onRemove로 해당 행의 brdno를 전달한다.
 handleSelectRow: 분석내용이 선택되면 현재 컴포넌트의 handleSelectRow에서 부모의 onSelectRow로 해당 행의 내용(row)를 전달한다.
 */
 
@@ -29,6 +35,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 class TalkerItem extends Component {
+
+  state = {
+    isSentence: false,
+    isWaveform: false,
+  }
      
   //게시판 글 선택
   handleSelectRow = () => {
@@ -36,8 +47,29 @@ class TalkerItem extends Component {
       onSelectRow(row);
   }    
 
+  //게시판 삭제
+  handleRemove = () => {
+    const { row, onRemove } = this.props;
+    onRemove(row.brdno);
+  }   
+  
+  //분석상세보기 클릭 시 메소드
+  handleSentenceClick = () => {
+    this.setState({
+      isSentence: !this.state.isSentence,
+    });
+  }
+
+  //파형보기 클릭 시 메소드
+  handleWaveformClick = () => {
+    this.setState({
+      isWaveform: !this.state.isWaveform,
+    });
+  }
+
   render() {
     const classes = useStyles.bind();
+    const { isSentence, isWaveform } = this.state;
 
       return(
           <div>
@@ -50,10 +82,10 @@ class TalkerItem extends Component {
                     
                     <Grid item sm = {1} 
                       direction="column"
-                      justify="flex-start"
+                      justify="space-between"
                       alignItems="flex-start">
                       <Typography style={{ marginTop: 25, marginLeft: 20 }} >{this.props.row.brdno}</Typography>
-                      <Typography variant="h5" style={{ marginTop: 25, marginLeft: 20, }} >{this.props.row.analysisType}</Typography>
+                      {/* <Typography variant="h8" style={{ marginTop: 25, marginLeft: 20, }} > 분석결과 </Typography> */}
                     </Grid>
                       
                     <Grid item sm = {2} direction="row" justify="flex-start" alignItems="flex-start" container>
@@ -68,10 +100,14 @@ class TalkerItem extends Component {
                             InputProps={{
                                 readOnly: true,
                                 }}
-                            // onClick={this.handleSelectRow}
+                            onClick={this.handleSelectRow}
 
                             />
+
+                          <Typography variant="h6"  style={{ marginTop: 5, marginLeft: 80, }} >{this.props.row.analysisType}</Typography>
+
                       </Grid> 
+                      
                   
                   <Grid item sm ={8}>
                     <Grid
@@ -95,10 +131,9 @@ class TalkerItem extends Component {
                             }}
                         onClick={this.handleSelectRow}
 
-                       /> 
+                       />           
                       </Grid>
 
-                      
                       {/* 분석 태그 start */}
                       <Grid
                         container
@@ -111,11 +146,46 @@ class TalkerItem extends Component {
                       {/* 분석태그 end */}
 
                       </Grid>
-
                   
-                    <Grid item sm={1}></Grid>
+                    <Grid item sm={1}
+                      
+                      container
+                      direction="column"
+                      justify="flex-end"
+                      alignItems="center"
+                    >
+                      <Button variant="contained" color="primary" style={{ margin: 10 , padding: 5}} onClick={this.handleRemove}>
+                        X
+                      </Button>
+
+                      <Button variant="outlined" color="primary" onClick={this.handleSentenceClick}>
+                        {isSentence ? '닫기' : '분석상세보기'}
+                      </Button>
+ 
+                      <Button variant="outlined" color="primary" onClick={this.handleWaveformClick}>
+                        {isWaveform ? '닫기' : '파형보기'}
+                      </Button>
+                    </Grid>
 
                 </Grid>
+
+                {/* <Player/> */}
+
+
+                {/* 체크1-문장분석결과 */}
+                {isSentence &&               
+                  <Grid style={{marginTop: 20}}>
+                    <SentenceAnalysis/>
+                  </Grid>
+                }
+                
+                {/* 체크2-파형분석결과 */}              
+                {isWaveform &&               
+                  <Grid style={{marginTop: 20}}>
+                     <WaveformAnalysis/>
+                  </Grid>
+                }
+
               </Paper>
             {/* 발화자 발화내용 end */}
             

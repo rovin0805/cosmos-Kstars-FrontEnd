@@ -16,6 +16,7 @@ selectedBoard: 게시판 글의 행이 선택되면 state변수인 selectedBoard
 */
 /*
 메소드 정리
+handleRemove: BoardItem에서 받은 brdno를 제외한 (filter) 글 게시판 배열(boards)가 화면에 렌더링된다.
 handleSaveData: TalkerForm의 handleSubmit에서 받은 data에 brdno가 있으면 글 수정이므로, data의 brdno와 같은 row의 data에 저장하고,
                 data에 brdno가 없으면 글 삽입이므로, 글 게시판 배열(boards)에 concat으로 배열을 추가한다.
                 그리고 selectedBoard값을 {}로 setState한다.
@@ -62,6 +63,15 @@ class TalkerList extends Component {
         }
     }
     
+    handleRemove = (brdno) => {
+    
+        if(brdno !== '예시')
+            this.setState({
+                boards: this.state.boards.filter(row => (row.brdno !== brdno) )             
+            })
+        
+    }
+
 
     handleSelectRow = (row) => {
         this.setState({selectedBoard: row});
@@ -89,10 +99,13 @@ class TalkerList extends Component {
 
                     {
                         boards.map(row =>
-                            (<TalkerItem key={row.brdno} row={row} onSelectRow={this.handleSelectRow} />)
+                            (<TalkerItem key={row.brdno} row={row} onRemove={this.handleRemove} onSelectRow={this.handleSelectRow} />)
                         )
                     }
                 {/* 분석내용 end */}
+
+              
+
                 </Grid>
              
             </div>
