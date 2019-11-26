@@ -141,7 +141,7 @@ class TalkerItem extends Component {
                         justify="flex-start"
                         alignItems="stretch"
                         >  
-                      <TalkerChips/>
+                        <TalkerChips/>
                       </Grid>
                       {/* 분석태그 end */}
 

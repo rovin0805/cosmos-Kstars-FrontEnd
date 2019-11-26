@@ -41,6 +41,8 @@ class TalkerList extends Component {
     }
     
     handleSaveData = (data) => {
+
+        //여기서 데이터를받음
         if (!data.brdno) {            // Insert
             this.setState({
                 maxNo: this.state.maxNo+1,

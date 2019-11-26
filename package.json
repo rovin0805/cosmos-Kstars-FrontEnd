@@ -37,5 +37,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://192.168.11.143:8080/"
+  "proxy":"http://172.20.10.6:8080"
+  
 }

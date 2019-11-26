@@ -51,6 +51,7 @@ class TalkerForm extends Component {
     talker:'',
     text:'',
     analysisType:'',
+
   }
   
   
@@ -84,15 +85,40 @@ class TalkerForm extends Component {
     })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
       e.preventDefault();
       let selectedBoard = this.props.selectedBoard;
+      const { talker, text, analysisType } =this.state;
+      
 
       let data = {
-        talker: this.state.talker,
-        text: this.state.text,
-        analysisType: this.state.analysisType,
+        talker: talker,
+        text: text,
+        analysisType: analysisType,
       }
+
+      console.log("입력 내용: ", this.state);
+
+
+      try {
+          const response = await Axios.post("/cosmos/kStars/analysis", {
+              talker, text, analysisType
+          });
+          const { status, data } = response;
+
+          console.log(response);
+
+          if (status === 200) {
+            console.log(data);
+ 
+          }
+
+      } catch (error) {
+            
+            console.log(error);
+      } 
+
+       
       //수정시 선택된 brdno로 저장되어 넘어감.
       if (selectedBoard.brdno) {
         data.brdno = selectedBoard.brdno
@@ -100,7 +126,6 @@ class TalkerForm extends Component {
 
       this.props.onSaveData(data); 
 
-      console.log("입력 내용: ", this.state);
 
 
   }
