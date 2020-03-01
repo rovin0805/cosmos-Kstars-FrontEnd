@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import Practice from '../../Practice';
 
 import Waveform from '../../Waveform';
 
@@ -37,7 +38,8 @@ class WaveformAnalysis extends Component {
                           alignItems="stretch"
                           >  
                         <Paper >
-                          <Waveform/>
+                          {/* <Waveform/> */}
+                          <Practice/>
                         </Paper>
 
                       </Grid>
