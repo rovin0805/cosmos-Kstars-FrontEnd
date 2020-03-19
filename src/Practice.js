@@ -1,5 +1,6 @@
 import React from 'react';
-import WaveSurfer from 'wavesurfer';
+import WaveSurfer from 'wavesurfer.js';
+import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js';
 import Typography from '@material-ui/core/Typography';
 import MenuItem from "@material-ui/core/MenuItem"
 import Select from '@material-ui/core/Select';
@@ -11,6 +12,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 
 class Waveform extends React.Component {
+  
   state = {
     zoomPixel: 10,
     startTime: 0.0,
@@ -20,7 +22,7 @@ class Waveform extends React.Component {
     getWidth:0.0,
     count:0,
     showSection: false,
-    showInput: false
+    showInput: false,
   }
 
   mydiv = null;
@@ -30,22 +32,41 @@ class Waveform extends React.Component {
     const aud = document.querySelector('#song');
 
     this.wavesurfer = WaveSurfer.create({
-      barWidth: 1,
+    container: document.querySelector('#waveform'),
+    barWidth: 1,
       cursorWidth: 1,
       container: '#waveform',
       backend: 'MediaElement',
       height: 80,
-      progressColor: '#ccc',
-      waveColor: '#ccc',
+      progressColor: '#3B8686',
+      waveColor: '#A8DBA8',
       cursorColor: '#4avi74a5',
     });
 
     this.wavesurfer.load(aud);
+    this.wavesurfer.addPlugin(regions.create({
+      regions: [
+          {
+              start:1,
+              end: 6,
+              loop: false,
+              color: 'hsla(400, 100%, 30%, 0.5)'
+          }
+      ],
+      // dragSelection: {
+      //     slop: 5
+      // }
+  })).initPlugin('regions');
+  console.log(this.wavesurfer.regions.list);
+  }
 
+  handleMouseMove =(event) =>{
+   
+    console.log("ismoving?",this.wavesurfer.regions.getCurrentTime,this.wavesurfer.regions.getCurrentTime);
   }
 
   playIt = () => {
-    this.wavesurfer.play();
+    this.wavesurfer.playPause();
   };
 
   Pause = () => {
@@ -69,83 +90,36 @@ class Waveform extends React.Component {
 
     this.wavesurfer.zoom(this.state.zoomPixel);
   }
-  GetCurrentTimeForStart=(e)=>{
+
+  handleClickOpen= (e) => {
     this.setState({
-      startTime: this.wavesurfer.getCurrentTime(),
-    })
+        open: true, 
+        endTime: this.wavesurfer.getCurrentTime(),
+    });
   }
 
-  GetCurrentTimeForEnd=(e)=>{
+  handleClose= () => {
     this.setState({
-      endTime: this.wavesurfer.getCurrentTime(),
-    })
+        open: false, 
+    });
   }
 
-  GetPosition= (e) =>{
-      if(this.state.count==0){
-          this.setState({
-            getX: e.pageX,
-            count: 1,
-          })
-      }
-      
-      if(this.state.count==1){
-        this.setState({
-            getY: e.pageX,
-            startTime: this.wavesurfer.getCurrentTime(),
-        })
-      }
-      this.setState({
-        showInput:false
+  SetTrue = () => {
+     this.setState({
+          showInput:true
       })
   }
 
-//   handleChange = (e) => {
-//     this.setState({
-//        [e.target.name]: e.target.value
-//     })
-// }
+     SetRegions = () => {
 
-  PlaySection = (e) => {
-    this.setState({
-        getWidth: this.state.getY-this.state.getX,
-        count:0,
-        open:false,
-        showSection: true,
-        showInput:true
-  })
-  this.wavesurfer.play(this.state.startTime,this.state.endTime);
-  console.log('getX',this.state.getX);
-  console.log('getY',this.state.getY);
-  console.log('startTime',this.state.startTime);
-  console.log('endTime',this.state.endTime);
-    }
+      //this.wavesurfer.enableDragSelection({});
 
-    handleMouseMove =(event) =>{
-        this.setState({
-          getX: event.pageX,
-          getY: event.pageX
-        })
-        console.log("ismoving?",this.state.getX,this.state.getY);
-      }
+     }
 
-      handleClickOpen= (e) => {
-        this.setState({
-            open: true, 
-            endTime: this.wavesurfer.getCurrentTime(),
-        });
-      }
-
-      handleClose= () => {
-        this.setState({
-            open: false, 
-        });
-    }
-
-     SetTrue = () => {
-         this.setState({
-             showInput:true
-         })
+     PlayRegions = () =>{
+      this.wavesurfer.play(regions.start,regions.end);
+      console.log(regions.start);
+      console.log(regions.end);
      }
   
 //https://taehongdev.github.io/html_css_study/exam03/audio/The_Weeknd-I_Feel_It_Coming(cover_byJ.Fla).mp3
@@ -153,44 +127,21 @@ class Waveform extends React.Component {
   render() {
 
     return (
+      
       <div>
+    
         <Typography>원본파형</Typography>
         <button onClick={this.playIt}>Play</button>
         <button onClick={this.Pause}>Stop</button>
         <button onClick={this.ZoomIn}>+</button>
         <button onClick={this.ZoomOut}>-</button>
-        {/* <button onClick={this.GetCurrentTimeForStart}>구간선택(시작)</button>
-        <button onClick={this.GetCurrentTimeForEnd}>구간선택(끝)</button> */}
-        <button onClick={this.handleClickOpen}>선택구간파형보기</button>
-        <Dialog 
-                open={this.state.open} 
-                onClose={this.handleClose} 
-                fullWidth
-                >
-                  <DialogTitle>선택구간확인</DialogTitle>
-                  <DialogContent>
-                    선택하신 구간을 재생하시겠습니까?
-                  </DialogContent>
-                  <DialogActions>
-                      <Button variant="outlined" color="primary" onClick={this.PlaySection}>Yes</Button>
-                      <Button variant="outlined" color="primary" onClick={this.handleClose}>No</Button>
-                  </DialogActions>
-                  </Dialog>
-        {/* <button onClick={this.SetTrue}>구간직접입력하기</button> */}
-        {/* <SelectedWaveformDownload st={this.state.startTime} et={this.state.endTime}/>  */}
-        {this.state.showInput? 
-        (<form>
-            <font size={1}>시작시간:{this.state.startTime}</font>
-        <font size={1}>끝시간:{this.state.endTime}</font>
-        </form>) : (null)}
+        <button onClick={this.SetRegions}>구간선택하기</button>
+        <button onClick={this.PlayRegions}>구간재생하기</button>
+
+
         <div
           style={{ border: '1px solid grey', width: 900, height: 80, position: "absolute"}}
-          id="waveform" onClick={this.GetPosition}></div>
-        {this.state.showSection? (
-        <div ref={ref => { this.mydiv = ref }} 
-        style={{height: 80, left:(this.state.getX-365), width:this.state.getWidth, position:'relative', border: '1px solid red', background:'#FCC17D'}}>
-        </div>
-        ):(null)}
+          id="waveform" onClick={this.handleMouseMove}></div>
         <audio
           id="song"
           src="https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a"
@@ -200,3 +151,5 @@ class Waveform extends React.Component {
       }
     }
 export default Waveform;
+
+/*https://github.com/katspaugh/wavesurfer.js/issues/1779 */

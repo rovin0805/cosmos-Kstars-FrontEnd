@@ -24,6 +24,17 @@ class Waveform extends React.Component {
       progressColor: '#4a74a5',
       waveColor: '#ccc',
       cursorColor: '#4avi74a5',
+      plugins: [
+        {
+          start: 1,
+          end:3,
+          loop:false,
+          color:'hsla(400, 100%, 30%, 0.5)'
+        }
+      ],
+      dragSelection:{
+        slop: 5
+      }
     });
 
     this.wavesurfer.load(aud);

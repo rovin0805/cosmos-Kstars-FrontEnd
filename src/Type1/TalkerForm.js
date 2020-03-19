@@ -51,6 +51,7 @@ class TalkerForm extends Component {
     talker:'',
     text:'',
     analysisType:'',
+    analysisResult: ''
 
   }
   
@@ -101,15 +102,15 @@ class TalkerForm extends Component {
 
 
       try {
-          const response = await Axios.post("/cosmos/kStars/analysis", {
+          const response = await Axios.post("/cosmos/kStars/analysis2", {
               talker, text, analysisType
           });
           const { status, data } = response;
 
-          console.log(response);
+          console.log("결과값:",response);
 
           if (status === 200) {
-            console.log(data);
+            console.log(data.analysisResult);
  
           }
 
