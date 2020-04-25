@@ -1,54 +1,59 @@
 import React from 'react';
-import WaveSurfer from 'wavesurfer';
+import WaveSurfer from 'wavesurfer.js';
+import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js';
 import Typography from '@material-ui/core/Typography';
-
+import Grid from '@material-ui/core/Grid';
 
 class Waveform extends React.Component {
+  
   state = {
     zoomPixel: 10,
-    startTime: 0.0,
-    endTime: 0.0,
-
+    startTime: 15,
+    endTime: 30,
+    getX: 0.0,
+    getY:0.0,
+    getWidth:0.0,
+    count:0,
+    showSection: false,
+    showInput: false,
   }
 
-  //원본파형 #waveform 생성
+  mydiv = null;
+
   componentDidMount() {
     const aud = document.querySelector('#song');
 
     this.wavesurfer = WaveSurfer.create({
-      barWidth: 1,
+    container: document.querySelector('#waveform'),
+    barWidth: 1,
       cursorWidth: 1,
       container: '#waveform',
       backend: 'MediaElement',
       height: 80,
-      progressColor: '#4a74a5',
-      waveColor: '#ccc',
+      progressColor: '#3B8686',
+      waveColor: '#A8DBA8',
       cursorColor: '#4avi74a5',
-      plugins: [
-        {
-          start: 1,
-          end:3,
-          loop:false,
-          color:'hsla(400, 100%, 30%, 0.5)'
-        }
-      ],
-      dragSelection:{
-        slop: 5
-      }
+      
     });
 
     this.wavesurfer.load(aud);
-
+    this.wavesurfer.addPlugin(regions.create({
+      regions:[
+          {
+              start:10,
+              end: 25,
+              loop: true,
+              color: 'hsla(400, 100%, 30%, 0.5)'
+          }
+      ],
+   
+  })).initPlugin('regions');
+  
   }
 
-  // 원본파형에 대한 메소드
   playIt = () => {
-    this.wavesurfer.play();
+    this.wavesurfer.playPause();
   };
-
-  Pause = () => {
-    this.wavesurfer.pause();
-  }
 
   ZoomIn = () => {
     this.setState({
@@ -68,50 +73,58 @@ class Waveform extends React.Component {
     this.wavesurfer.zoom(this.state.zoomPixel);
   }
 
-  GetCurrentTimeForStart=()=>{
+  handleClickOpen= (e) => {
     this.setState({
-      startTime: this.wavesurfer.getCurrentTime()
-    })
+        open: true, 
+        endTime: this.wavesurfer.getCurrentTime(),
+    });
   }
 
-  GetCurrentTimeForEnd=()=>{
+  handleClose= () => {
     this.setState({
-      endTime: this.wavesurfer.getCurrentTime()
-    })
+        open: false, 
+    });
   }
 
-  Distroy=()=>{
-    this.wavesurfer.destroy();
+  SetTrue = () => {
+     this.setState({
+          showInput:true
+      })
   }
 
-  PlayIng = () => {
-    this.wavesurfer.play(this.state.startTime,this.state.endTime);
+  PlayRegions = () =>{
+      this.wavesurfer.play(this.wavesurfer.regions.params.regions[0].start,this.wavesurfer.regions.params.regions[0].end);
+      console.log(this.wavesurfer.regions.params.regions[0].start)
+      console.log(this.wavesurfer.regions.params.regions[0].end)
   }
-
+  
 //https://taehongdev.github.io/html_css_study/exam03/audio/The_Weeknd-I_Feel_It_Coming(cover_byJ.Fla).mp3
 //https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a
   render() {
+
     return (
+      
       <div>
+        <Grid item sm={10}>
+        <Grid item sm ={3}>
         <Typography>원본파형</Typography>
-        <button onClick={this.playIt}>Play</button>
-        <button onClick={this.Pause}>Stop</button>
-        
-        <button onClick={this.ZoomIn}>+</button>
-        <button onClick={this.ZoomOut}>-</button>
-        <button onClick={this.GetCurrentTimeForStart}>구간선택(시작)</button>
-        <button onClick={this.GetCurrentTimeForEnd}>구간선택(끝)</button>
-        <button onClick={this.PlayIng}>선택구간파형보기</button>
+        <button type="button" onClick={this.playIt}>재생하기/멈추기</button>
+        <button type="button" onClick={this.ZoomIn}>+</button>
+        <button type="button" onClick={this.ZoomOut}>-</button>
+        <button type="button" onClick={this.PlayRegions}>구간반복재생</button>
         <div
-          style={{ border: '1px solid grey', width: 900, height: 80}}
-          id="waveform"
-          />
+          style={{ border: '1px solid grey', width: 900, height: 80, position: "absolute"}}
+          id="waveform"></div>
         <audio
           id="song"
           src="https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a"
-        />
-      </div>
-    );
-  }
-}
+          />
+          </Grid>
+          </Grid>
+          </div>
+        );
+      }
+    }
 export default Waveform;
+
+/*https://github.com/katspaugh/wavesurfer.js/issues/1779 */

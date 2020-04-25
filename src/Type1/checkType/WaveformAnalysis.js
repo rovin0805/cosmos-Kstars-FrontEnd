@@ -2,16 +2,13 @@ import React, { Component } from 'react'
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Practice from '../../Practice';
-
 import Waveform from '../../Waveform';
-
-
+import Paper from '@material-ui/core/Paper';
+import style from "../styles/SentenceAnalysisTable";
 
 class WaveformAnalysis extends Component {
   render() {
-
+    const classes = style.bind();
     return (
       <div>
         <Grid container spacing = {1} item sm={12} >  
@@ -30,24 +27,19 @@ class WaveformAnalysis extends Component {
                     
                     {/* 파형그려주는부분 start */}
                     <Grid item sm ={8}>
-
-                      <Grid
+                    <Grid
                           container
                           direction="column"
                           justify="flex-end"
                           alignItems="stretch"
                           >  
-                        <Paper >
-                          {/* <Waveform/> */}
-                          <Practice/>
-                        </Paper>
-
-                      </Grid>
+                        <Paper className={classes.root}>
+                          <Waveform/>
+                          </Paper>
+                          </Grid>
                     </Grid>
                     {/* 파형그려주는부분 end */}
-
         </Grid>
-      
       </div>
     )
   }

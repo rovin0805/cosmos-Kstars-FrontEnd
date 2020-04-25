@@ -7,10 +7,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
+import WaveformAnalysis from '../Type1/checkType/WaveformAnalysis';
 
 import Axios from 'axios';
-
-
 
 /*
 TalkerForm 컴포넌트
@@ -24,7 +23,6 @@ handleSubmit: save버튼을 누르면, json형식으로 data에 저장해서 부
               만약, 부모로부터 받은 selectedBoard에 brdno가 있으면 data의 brdno를 기존 selectedBoard의 brdno로 저장해서 넘겨준다.
 */
 
-
 const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(3, 2),
@@ -32,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   button: {
     margin: theme.spacing(1),
-    padding: theme.spacing(3, 2),
+    //padding: theme.spacing(3, 2),
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -51,16 +49,16 @@ class TalkerForm extends Component {
     talker:'',
     text:'',
     analysisType:'',
-    analysisResult: ''
-
+    analysisResult: '',
+    isWaveform: false,
   }
   
-  
+  //수정해야할 분석창이 넘어왔을 때
   shouldComponentUpdate(nextProps, nextState) {
     let selectedBoard = nextProps.selectedBoard;
    
     
-    //update 글 수정(입력상자 초기화)
+    //입력 후 초기화
     if (!selectedBoard.brdno) {
         this.state.talker = "";
         this.state.text  = "";  
@@ -74,7 +72,7 @@ class TalkerForm extends Component {
     this.state.text = selectedBoard.text;
     this.state.analysisType = selectedBoard.analysisType;
 
-    console.log("선택된 내용: ", selectedBoard);
+    console.log("선택된 내용 번호: ", selectedBoard.brdno);
          
     return true;
   }
@@ -91,57 +89,50 @@ class TalkerForm extends Component {
       let selectedBoard = this.props.selectedBoard;
       const { talker, text, analysisType } =this.state;
       
-
+      //서버에 넘겨주는 값들
       let data = {
         talker: talker,
         text: text,
         analysisType: analysisType,
       }
 
-      console.log("입력 내용: ", this.state);
-
-
       try {
           const response = await Axios.post("/cosmos/kStars/analysis2", {
               talker, text, analysisType
           });
           const { status, data } = response;
-
-          console.log("결과값:",response);
+          console.log("문장번호" + selectedBoard.brdno);
 
           if (status === 200) {
-            console.log(data.analysisResult);
- 
-          }
+            //서버에서 넘어온 값들 
+          this.props.onSaveData(data,selectedBoard.brdno); 
+    }
+
 
       } catch (error) {
             
             console.log(error);
       } 
 
-       
-      //수정시 선택된 brdno로 저장되어 넘어감.
-      if (selectedBoard.brdno) {
-        data.brdno = selectedBoard.brdno
-      } 
-
-      this.props.onSaveData(data); 
-
-
-
   }
 
-
+   //파형보기 클릭 시 메소드
+   handleWaveformClick = () => {
+    this.setState({
+      isWaveform: !this.state.isWaveform,
+    });
+  }
 
   render() {
     const classes = useStyles.bind();
+    const {isWaveform} = this.state;
     
       return (
-          <form onSubmit={this.handleSubmit}>
-        
-          <Paper className = {classes.root} style={{marginTop: 20, marginBottom: 15,}}>
+
+        <form onSubmit={this.handleSubmit}>
+          <Paper className = {classes.root} style={{marginTop: 20, marginBottom: 15}}>
               <Grid container spacing = {3} item xs={12}>
-            
+             
                 <Grid item xs = {3} direction="row" justify="flex-end" alignItems="center">
                     <TextField
                       label="발화인"
@@ -179,18 +170,16 @@ class TalkerForm extends Component {
                        /> 
                 </Grid>
 
-                
-                    <Grid container spacing = {3}  item xs = {3} >
+                    <Grid container spacing= {3} item xs = {3} >
                       {/* 분석유형 선택 start */}
                       <Grid>
-                        <FormControl variant="outlined" className={classes.formControl} style={{ marginTop: 20, minWidth: 130,}}>
+                        <FormControl variant="outlined" className={classes.formControl} style={{ marginTop: 20, minWidth: 130}}>
                           
                           <Select
                             value={this.state.analysisType}
                             onChange={this.handleChange}
                             inputProps={{
-                              name: 'analysisType',
-                             
+                              name: 'analysisType'
                             }}
                             >
                             <MenuItem  value={"morpAPI"}>morpAPI</MenuItem>
@@ -203,20 +192,34 @@ class TalkerForm extends Component {
                           </Select>
                         </FormControl>
                       </Grid>
-                    
                       {/* 분석유형 선택 end */}
 
-                      {/* 분석하기 버튼 start */}
-                      <Grid >
-                        <Button type="submit" variant="contained" color="secondary" className={classes.button} style={{ margin: 20 , padding: 13}}>
-                          분석하기
+                      {/* 분석, 파형 버튼 start */}
+                      <Grid item sm={1}
+                      container
+                      direction="column"
+                      justify="flex-end"
+                      alignItems="center"
+                      >
+                        <Button type="submit" variant="contained" color="secondary" className={classes.button} style={{ margin: 10 , padding: 5}}>
+                            입력하기
                         </Button>
+
+                        <Button variant="outlined" color="primary" style={{padding: 5}} onClick={this.handleWaveformClick}>
+                        {isWaveform ? '닫기' : '파형보기'}
+                      </Button>
+
                       </Grid>
+                        {/* 분석, 파형 버튼 end */}
+
                     </Grid>
-                      {/* 분석하기 버튼 end */}
-                    
                   </Grid>
-                      
+                       {/* 파형분석창-checkType */}  
+                       {isWaveform &&               
+                  <Grid>
+                     <WaveformAnalysis/>
+                  </Grid>
+                } 
               </Paper>
               </form>
       );

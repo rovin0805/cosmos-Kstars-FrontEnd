@@ -25,38 +25,16 @@ const useStyles = makeStyles(theme => ({
 
 class TalkerChips extends Component {
 
-  state = {
-
-    chipData: [
-      
-      { key: 0, label: '코스모스 + NNG' },
-      { key: 1, label: '는 + JX' },
-      { key: 2, label: '가을 + NNG' },
-      { key: 3, label: '에 + JKB' },
-      { key: 4, label: '피 + VV' },
-      { key: 5, label: '어요 + EF' },
-    ],
-
-  }
-
   render(){
     const classes = useStyles.bind();
-    const {chipData} = this.state;
-
-    return (
-
+    const {chipData} = this.props;
+    console.log("TalkerChip로 넘어온 분석 결과",chipData);
+        return (
       <div>
 
         <Paper className={classes.root}>
-          {chipData.map(data => (
-                <Chip
-                  key={data.key}
-                  label={data.label}
-                  className={classes.chip}
-                  
-                />
-              
-            ))}
+          {/*직렬화 해서 데이터 보여주기 해야함*/}
+            {chipData}
         </Paper>
 
       </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-
+import Button from '@material-ui/core/Button';
 import TalkerForm from './TalkerForm';
 import TalkerItem from './TalkerItem';
 
@@ -37,30 +37,31 @@ class TalkerList extends Component {
             },
          
         ],
-         selectedBoard:{}
+         selectedBoard:{},
+         analysisResult:''
     }
     
-    handleSaveData = (data) => {
-
+    handleSaveData = (data,brdno) => {
+        console.log("TalkerList(부모)로 넘어온 데이터: ",data);
+        console.log("수정하려는 문장의 번호가 왔나요? ", brdno);
         //여기서 데이터를받음
-        if (!data.brdno) {            // Insert
+        if (!brdno) {            // Insert
             this.setState({
                 maxNo: this.state.maxNo+1,
                 boards: this.state.boards.concat({brdno: this.state.maxNo, ...data }),
                 selectedBoard: {},
+                analysisResult:data.analysisResult
                 
             });
-            console.log("넘버maxno:"+this.state.maxNo);
-            console.log("insert값으로 들어왔음");
 
         } else {                                                        // Update
             this.setState({
-                boards: this.state.boards.map(row => data.brdno === row.brdno ? {...data }: row),
-                selectedBoard: {}
+                boards: this.state.boards.map(row => brdno === row.brdno ? {brdno: brdno, ...data }: row),
+                selectedBoard: {},
+                analysisResult:data.analysisResult
             })  
 
-            console.log("넘버brdno:"+ data.brdno);
-            console.log("update값으로 들어왔음");
+            console.log("updata 완료");
   
         }
     }
@@ -90,23 +91,32 @@ class TalkerList extends Component {
                     direction="column"
                     justify="space-between"
                     >
-                {/* 분석창 start */}
-                <Typography variant="h4">분석창</Typography>
+                {/* 입력창 start */}
+                <Typography variant="h4">입력창</Typography>
                
                 <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleSaveData}/>
-                {/* 분석창 end */}
+                {/* 입력창 end */}
 
-                {/* 분석내용 start */}
-                <Typography variant="h4">분석내용</Typography>
+                {/* 분석창 start */}
+                <Typography variant="h4">분석창</Typography>
+                <Button type="submit" variant="contained"
+                //  color="secondary" 
+                // className={classes.button} 
+                style={{ margin: 10 , padding: 5}}
+                >
+                          분석하기
+                        </Button>
 
                     {
                         boards.map(row =>
-                            (<TalkerItem key={row.brdno} row={row} onRemove={this.handleRemove} onSelectRow={this.handleSelectRow} />)
+                            (
+                            <div>
+                            <TalkerItem key={row.brdno} row={row} onRemove={this.handleRemove} onSelectRow={this.handleSelectRow} Result={this.state.analysisResult}/>
+                                {/* <TalkerChips chipData={this.state.analysisResult} /> */}
+                                </div>)
                         )
                     }
-                {/* 분석내용 end */}
-
-              
+                {/* 분석창 end */}
 
                 </Grid>
              
