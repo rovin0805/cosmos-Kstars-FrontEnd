@@ -7,6 +7,7 @@ class App extends Component {
     return (
       <div>
         <TalkerList/>
+        {"라영지 왕 바보"}
       </div>
     )
   }
