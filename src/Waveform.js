@@ -9,8 +9,8 @@ class Waveform extends React.Component {
   
   state = {
     zoomPixel: 10,
-    startTime: 15,
-    endTime: 30,
+    startTime: 10,
+    endTime: 15,
     getX: 0.0,
     getY:0.0,
     getWidth:0.0,
@@ -42,9 +42,10 @@ class Waveform extends React.Component {
     this.wavesurfer.addPlugin(regions.create({
       regions:[
           {
-              start:10,
-              end: 25,
+              start:this.state.startTime,
+              end: this.state.endTime,
               loop: true,
+              resize:true,
               color: 'hsla(400, 100%, 30%, 0.5)'
           }
       ],
@@ -95,11 +96,20 @@ class Waveform extends React.Component {
   }
 
   PlayRegions = () =>{
-      this.wavesurfer.play(this.wavesurfer.regions.params.regions[0].start,this.wavesurfer.regions.params.regions[0].end);
-      console.log(this.wavesurfer.regions.params.regions[0].start)
-      console.log(this.wavesurfer.regions.params.regions[0].end)
+
+    console.log("선택구간정보",this.wavesurfer.regions.list.params)
+    console.log("선택구간정보",this.wavesurfer.regions.wavesurfer.regions.list)
+    this.setState({
+      startTime:this.wavesurfer.regions.params.regions[0].start,
+      endTime:this.wavesurfer.regions.params.regions[0].end
+    })
+    
+      this.wavesurfer.play(this.state.startTime,this.state.endTime);
+      
+      console.log(this.state.startTime)
+      console.log(this.state.endTime)
   }
-  
+
 //https://taehongdev.github.io/html_css_study/exam03/audio/The_Weeknd-I_Feel_It_Coming(cover_byJ.Fla).mp3
 //https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a
   render() {
