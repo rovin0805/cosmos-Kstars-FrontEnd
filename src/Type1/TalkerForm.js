@@ -92,6 +92,7 @@ class TalkerForm extends Component {
     //   } 
 
       this.props.onSaveData(data,selectedBoard.brdno); 
+      this.props.onRouterData(data);
 
   }
 
@@ -198,7 +199,9 @@ class TalkerForm extends Component {
                   <Grid>
                      <WaveformAnalysis/>
                   </Grid>
-                } 
+                }
+                {/*Data값 서버연동 컴포넌트에 넘겨주기*/}
+                
               </Paper>
               </form>
       );

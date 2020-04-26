@@ -37,17 +37,17 @@ class TalkerList extends Component {
          
         ],
          selectedBoard:{},
-       //  analysisResult:''
     }
     
     handleGetData = (data,brdno) => {
-       
+       console.log("handleGetData에 값이 들어왔나요? ", data)
         if (!brdno) {            // Insert
             this.setState({
                 maxNo: this.state.maxNo+1,
                 boards: this.state.boards.concat({brdno: this.state.maxNo, ...data }),
                 selectedBoard: {},
             });
+            this.props.onData(this.state.boards.brdno)
             console.log("Insert 완료");
 
         } else {                                                        // Update
@@ -55,13 +55,14 @@ class TalkerList extends Component {
                 boards: this.state.boards.map(row => brdno === row.brdno ? {brdno: brdno, ...data }: row),
                 selectedBoard: {},
             })  
+            this.props.onData(this.state.boards.brdno)
             console.log("update 완료");
         }
     }
 
-    handleRouteData = () => {
+    handleRouteData = (data) => {
 
-        console.log("handleRouteData에 데이터가 들어왔나요?",this.state)
+        console.log("handleRouteData에 값이 들어왔나요?",data)
 
     }
     
@@ -93,7 +94,7 @@ class TalkerList extends Component {
                 {/* 입력창 start */}
                 <Typography variant="h4">입력창</Typography>
                
-                <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData} onRouterData={this.hand}/>
+                <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData} onRouterData={this.handleRouteData}/>
                 {/* 입력창 end */}
 
                 {/* 분석창 start */}
@@ -108,7 +109,7 @@ class TalkerList extends Component {
                         )
                     }
                 {/* 분석창 end */}
-
+                {/*DataConvey에 brdno 넘겨주기*/}
                 </Grid>
              
             </div>
