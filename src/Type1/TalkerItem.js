@@ -114,9 +114,9 @@ class TalkerItem extends Component {
                       alignItems="center"
                     >
 
-                      <Button variant="contained" color="primary" style={{ margin: 10 , padding: 5}} onClick={this.handleRemove}>
+                      {/* <Button variant="contained" color="primary" style={{ margin: 10 , padding: 5}} onClick={this.handleRemove}>
                         X
-                      </Button>
+                      </Button> */}
 
                       <Button variant="outlined" color="primary" style={{padding: 5}} onClick={this.handleSentenceClick}>
                         {isSentence ? '닫기' : '분석상세보기'}

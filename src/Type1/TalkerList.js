@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TalkerForm from './TalkerForm';
 import TalkerItem from './TalkerItem';
+import Axios from 'axios';
+import TalkerChips from './TalkerChips';
 
 /*
 TalkerList 컴포넌트
@@ -33,6 +35,7 @@ class TalkerList extends Component {
                 talker:'코스모스', 
                 text: '코스모스는 가을에 피어요.', 
                 analysisType:'morpAPI', 
+                analysisResult:'결과물',
             },
          
         ],
@@ -47,7 +50,6 @@ class TalkerList extends Component {
                 boards: this.state.boards.concat({brdno: this.state.maxNo, ...data }),
                 selectedBoard: {},
             });
-            this.props.onData(this.state.boards.brdno)
             console.log("Insert 완료");
 
         } else {                                                        // Update
@@ -55,17 +57,36 @@ class TalkerList extends Component {
                 boards: this.state.boards.map(row => brdno === row.brdno ? {brdno: brdno, ...data }: row),
                 selectedBoard: {},
             })  
-            this.props.onData(this.state.boards.brdno)
             console.log("update 완료");
         }
     }
 
-    handleRouteData = (data) => {
-
-        console.log("handleRouteData에 값이 들어왔나요?",data)
-
-    }
+    handleConveyData = async (e) => {
+        e.preventDefault();
+        console.log("서버 연동 함수 호출");
+        const { boards } =this.state;
+  
+        try {
+            const response = await Axios.post("/cosmos/kStars/analysis2", {
+                boards
+            });
+            const { status, data } = response;
+  
+            if (status === 200) {
+              //서버에서 넘어온 값들 
+              console.log("값이 성공적으로 넘어왔습니다.",data)
+              this.setState({
+                  boards:boards.concat({analysisResult:data.analysisResult })
+              })
+      }
+  
+        } catch (error) {
+              
+              console.log(error);
+        } 
     
+    }
+
     handleRemove = (brdno) => {
     
         if(brdno !== '예시')
@@ -83,6 +104,7 @@ class TalkerList extends Component {
 
     render() {
         const { boards, selectedBoard } = this.state;
+        console.log(boards)
 
         return (
             <div>
@@ -94,22 +116,24 @@ class TalkerList extends Component {
                 {/* 입력창 start */}
                 <Typography variant="h4">입력창</Typography>
                
-                <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData} onRouterData={this.handleRouteData}/>
+                <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData}/>
                 {/* 입력창 end */}
 
                 {/* 분석창 start */}
                 <Typography variant="h4">분석창</Typography>
-                <Button type="submit" variant="contained" style={{ margin: 10 , padding: 5}} onClick={this.handleRouteData}> 분석하기</Button>
+                <Button variant="contained" color="secondary"  style={{ margin: 10 , padding: 5}} onClick={this.handleConveyData}>
+                            분석하기
+                        </Button>
                     {
                         boards.map(row =>
                             (
                             <div>
                             <TalkerItem key={row.brdno} row={row} onRemove={this.handleRemove} onSelectRow={this.handleSelectRow}/>
+                            <TalkerChips chipData={row.analysisResult}/>
                                 </div>)
                         )
                     }
                 {/* 분석창 end */}
-                {/*DataConvey에 brdno 넘겨주기*/}
                 </Grid>
              
             </div>
