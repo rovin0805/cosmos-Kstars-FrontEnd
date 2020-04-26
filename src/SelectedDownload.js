@@ -101,7 +101,7 @@ class SelectedDownload extends Component {
 
       return (
           <div>
-              <button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+              <button variant="outlined" color="primary" type="button" onClick={this.handleClickOpen}>
                  선택구간저장
               </button>
               <Dialog 
