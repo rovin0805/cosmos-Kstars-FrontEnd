@@ -20,9 +20,8 @@ handleRemove: BoardItem에서 받은 brdno를 제외한 (filter) 글 게시판 �
 handleSaveData: TalkerForm의 handleSubmit에서 받은 data에 brdno가 있으면 글 수정이므로, data의 brdno와 같은 row의 data에 저장하고,
                 data에 brdno가 없으면 글 삽입이므로, 글 게시판 배열(boards)에 concat으로 배열을 추가한다.
                 그리고 selectedBoard값을 {}로 setState한다.
-
 handleSelectRow: 행(TalkerItem)이 선택되면, 현재 컴포넌트(TalkerList)의 selectedBoard에 행의 값이 모두 저장되고, TalkerForm 컴포넌트에 selectedBoard의 값을 전달한다.
-                
+
 */
 
 class TalkerList extends Component {
@@ -30,40 +29,40 @@ class TalkerList extends Component {
         maxNo: 1,
         boards: [
             {
-                brdno: '예시', //분석창 번호
-                talker:'코스모스', //발화인
-                text: '코스모스는 가을에 피어요.', //분석내용
-                analysisType:'morpAPI', //분석유형
+                brdno: '예시',
+                talker:'코스모스', 
+                text: '코스모스는 가을에 피어요.', 
+                analysisType:'morpAPI', 
             },
          
         ],
          selectedBoard:{},
-         analysisResult:''
+       //  analysisResult:''
     }
     
-    handleSaveData = (data,brdno) => {
-        console.log("TalkerList(부모)로 넘어온 데이터: ",data);
-        console.log("수정하려는 문장의 번호가 왔나요? ", brdno);
-        //여기서 데이터를받음
+    handleGetData = (data,brdno) => {
+       
         if (!brdno) {            // Insert
             this.setState({
                 maxNo: this.state.maxNo+1,
                 boards: this.state.boards.concat({brdno: this.state.maxNo, ...data }),
                 selectedBoard: {},
-                analysisResult:data.analysisResult
-                
             });
+            console.log("Insert 완료");
 
         } else {                                                        // Update
             this.setState({
                 boards: this.state.boards.map(row => brdno === row.brdno ? {brdno: brdno, ...data }: row),
                 selectedBoard: {},
-                analysisResult:data.analysisResult
             })  
-
-            console.log("updata 완료");
-  
+            console.log("update 완료");
         }
+    }
+
+    handleRouteData = () => {
+
+        console.log("handleRouteData에 데이터가 들어왔나요?",this.state)
+
     }
     
     handleRemove = (brdno) => {
@@ -79,7 +78,7 @@ class TalkerList extends Component {
     handleSelectRow = (row) => {
         this.setState({selectedBoard: row});
     }
-    
+  
 
     render() {
         const { boards, selectedBoard } = this.state;
@@ -94,25 +93,17 @@ class TalkerList extends Component {
                 {/* 입력창 start */}
                 <Typography variant="h4">입력창</Typography>
                
-                <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleSaveData}/>
+                <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData} onRouterData={this.hand}/>
                 {/* 입력창 end */}
 
                 {/* 분석창 start */}
                 <Typography variant="h4">분석창</Typography>
-                <Button type="submit" variant="contained"
-                //  color="secondary" 
-                // className={classes.button} 
-                style={{ margin: 10 , padding: 5}}
-                >
-                          분석하기
-                        </Button>
-
+                <Button type="submit" variant="contained" style={{ margin: 10 , padding: 5}} onClick={this.handleRouteData}> 분석하기</Button>
                     {
                         boards.map(row =>
                             (
                             <div>
-                            <TalkerItem key={row.brdno} row={row} onRemove={this.handleRemove} onSelectRow={this.handleSelectRow} Result={this.state.analysisResult}/>
-                                {/* <TalkerChips chipData={this.state.analysisResult} /> */}
+                            <TalkerItem key={row.brdno} row={row} onRemove={this.handleRemove} onSelectRow={this.handleSelectRow}/>
                                 </div>)
                         )
                     }
