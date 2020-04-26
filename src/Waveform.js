@@ -3,6 +3,7 @@ import WaveSurfer from 'wavesurfer.js';
 import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import SelectedDownload from './SelectedDownload';
 
 class Waveform extends React.Component {
   
@@ -16,6 +17,7 @@ class Waveform extends React.Component {
     count:0,
     showSection: false,
     showInput: false,
+    src: 'https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a',
   }
 
   mydiv = null;
@@ -101,6 +103,7 @@ class Waveform extends React.Component {
 //https://taehongdev.github.io/html_css_study/exam03/audio/The_Weeknd-I_Feel_It_Coming(cover_byJ.Fla).mp3
 //https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a
   render() {
+    const {startTime, endTime, src} = this.state;
 
     return (
       
@@ -112,12 +115,14 @@ class Waveform extends React.Component {
         <button type="button" onClick={this.ZoomIn}>+</button>
         <button type="button" onClick={this.ZoomOut}>-</button>
         <button type="button" onClick={this.PlayRegions}>구간반복재생</button>
+        {(startTime!==0.0 && endTime!==0.0 ) && <SelectedDownload st={startTime.toFixed(1)} et={endTime.toFixed(1)} src={src}/> }
+
         <div
           style={{ border: '1px solid grey', width: 900, height: 80, position: "absolute"}}
           id="waveform"></div>
         <audio
           id="song"
-          src="https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a"
+          src={src}
           />
           </Grid>
           </Grid>
