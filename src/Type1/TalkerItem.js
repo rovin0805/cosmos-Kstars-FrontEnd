@@ -4,10 +4,8 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from './styles/TalkerItemCss';
 import SentenceAnalysis from '../Type1/checkType/SentenceAnalysis';
-import WaveformAnalysis from '../Type1/checkType/WaveformAnalysis';
-import TalkerChips from './TalkerChips';
 
 /*
 메소드 정리
@@ -15,26 +13,10 @@ handleRemove: 삭제버튼이 onClick되면 현재 컴포넌트의 handleRemove�
 handleSelectRow: 분석내용이 선택되면 현재 컴포넌트의 handleSelectRow에서 부모의 onSelectRow로 해당 행의 내용(row)를 전달한다.
 */
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(3, 2),
-    margin: theme.spacing(1),
-  },
-  button: {
-    margin: theme.spacing(1),
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
-
-}));
-
 class TalkerItem extends Component {
 
   state = {
-    isSentence: false,
-    chipData: this.props.Result,
+    isSentence: false
   }
      
   //게시판 글 선택
@@ -58,16 +40,16 @@ class TalkerItem extends Component {
 
   render() {
     const classes = useStyles.bind();
-    const { isSentence, chipData} = this.state;
+    const { isSentence } = this.state;
     const {row} = this.props;
  
       return(
           <div>
-            {/* 발화자 발화내용 start */}
+            
              <Paper className = {classes.root} elevation ={3} style={{marginTop: 10, }}>
 
-                <Grid container spacing = {1} item sm={12} > 
-                    
+                <Grid container spacing = {1} item sm={12} >
+                   {/* 행번호, 발화인, 분석태그 start */}
                     <Grid item sm = {1} 
                       direction="column"
                       justify="space-between"
@@ -93,8 +75,9 @@ class TalkerItem extends Component {
                           <Typography variant="h6"  style={{ marginTop: 5, marginLeft: 80, }} >{row.analysisType}</Typography>
 
                       </Grid> 
-                      
+                       {/* 행번호, 발화인, 분석태그 end */}
                   
+                  {/* 발화내용 start */}
                   <Grid item sm ={8}>
                     <Grid
                       container
@@ -118,20 +101,11 @@ class TalkerItem extends Component {
 
                        />           
                       </Grid>
-
-                      {/* 분석 태그 start */}
-                      <Grid
-                        container
-                        direction="column"
-                        justify="flex-start"
-                        alignItems="stretch"
-                        >  
-                        <TalkerChips chipData={chipData}/>
+            
                       </Grid>
-                      {/* 분석태그 end */}
+                      {/* 발화내용 end */}
 
-                      </Grid>
-                  
+                   {/* 삭제, 분석상세보기 버튼 start */}
                     <Grid item sm={1}
                       
                       container
@@ -139,6 +113,7 @@ class TalkerItem extends Component {
                       justify="flex-end"
                       alignItems="center"
                     >
+
                       <Button variant="contained" color="primary" style={{ margin: 10 , padding: 5}} onClick={this.handleRemove}>
                         X
                       </Button>
@@ -148,6 +123,7 @@ class TalkerItem extends Component {
                       </Button>
 
                     </Grid>
+                    {/* 삭제, 분석상세보기 버튼 end */}
 
                 </Grid>
 
@@ -159,7 +135,6 @@ class TalkerItem extends Component {
                 }
           
               </Paper>
-            {/* 발화자 발화내용 end */}
             
              </div>
 

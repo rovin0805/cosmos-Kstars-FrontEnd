@@ -8,7 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
-import style from "../styles/SentenceAnalysisTable";
+import style from "../styles/SentenceAnalysisCss";
 import TalkerChips from "../TalkerChips";
 
 class SentenceAnalysis extends Component {

@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Waveform from '../../Waveform';
 import Paper from '@material-ui/core/Paper';
-import style from "../styles/SentenceAnalysisTable";
+import style from "../styles/SentenceAnalysisCss";
 
 class WaveformAnalysis extends Component {
   render() {

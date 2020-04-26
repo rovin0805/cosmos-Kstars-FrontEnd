@@ -6,10 +6,8 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
+import useStyles from './styles/TalkerFormCss';
 import WaveformAnalysis from '../Type1/checkType/WaveformAnalysis';
-
-import Axios from 'axios';
 
 /*
 TalkerForm 컴포넌트
@@ -23,25 +21,6 @@ handleSubmit: save버튼을 누르면, json형식으로 data에 저장해서 부
               만약, 부모로부터 받은 selectedBoard에 brdno가 있으면 data의 brdno를 기존 selectedBoard의 brdno로 저장해서 넘겨준다.
 */
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(3, 2),
-    margin: theme.spacing(1),
-  },
-  button: {
-    margin: theme.spacing(1),
-    //padding: theme.spacing(3, 2),
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 200,
-  },
-
-}));
 
 class TalkerForm extends Component {
   
@@ -49,7 +28,6 @@ class TalkerForm extends Component {
     talker:'',
     text:'',
     analysisType:'',
-    analysisResult: '',
     isWaveform: false,
   }
   
@@ -89,34 +67,35 @@ class TalkerForm extends Component {
       let selectedBoard = this.props.selectedBoard;
       const { talker, text, analysisType } =this.state;
       
-      //서버에 넘겨주는 값들
       let data = {
         talker: talker,
         text: text,
         analysisType: analysisType,
       }
 
-      try {
-          const response = await Axios.post("/cosmos/kStars/analysis2", {
-              talker, text, analysisType
-          });
-          const { status, data } = response;
-          console.log("문장번호" + selectedBoard.brdno);
+    //   try {
+    //       const response = await Axios.post("/cosmos/kStars/analysis2", {
+    //           talker, text, analysisType
+    //       });
+    //       const { status, data } = response;
+    //       console.log("문장번호" + selectedBoard.brdno);
 
-          if (status === 200) {
-            //서버에서 넘어온 값들 
-          this.props.onSaveData(data,selectedBoard.brdno); 
-    }
+    //       if (status === 200) {
+    //         //서버에서 넘어온 값들 
+    //       this.props.onSaveData(data,selectedBoard.brdno); 
+    // }
 
 
-      } catch (error) {
+    //   } catch (error) {
             
-            console.log(error);
-      } 
+    //         console.log(error);
+    //   } 
+
+      this.props.onSaveData(data,selectedBoard.brdno); 
 
   }
 
-   //파형보기 클릭 시 메소드
+  
    handleWaveformClick = () => {
     this.setState({
       isWaveform: !this.state.isWaveform,
@@ -194,7 +173,7 @@ class TalkerForm extends Component {
                       </Grid>
                       {/* 분석유형 선택 end */}
 
-                      {/* 분석, 파형 버튼 start */}
+                      {/* 입력, 파형 버튼 start */}
                       <Grid item sm={1}
                       container
                       direction="column"
@@ -210,7 +189,7 @@ class TalkerForm extends Component {
                       </Button>
 
                       </Grid>
-                        {/* 분석, 파형 버튼 end */}
+                        {/* 입력, 파형 버튼 end */}
 
                     </Grid>
                   </Grid>
