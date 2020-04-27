@@ -4,47 +4,33 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import WaveSurfer from 'wavesurfer';
+
 import { Typography } from "@material-ui/core";
 
 
 class SelectedDownload extends Component {
   state={
-      st: this.props.st,
-      et: this.props.et,
+      startTime: this.props.st,
+      endTime: this.props.et,
       src: this.props.src,
 
-      selectedFile: "", //원본파일명
-      userFile: "", //사용자지정파일명
+      originalFile:null,
+      userFileName: "", //사용자지정파일명
       open: false, // dialog 창이 열려있는지 유무
-      isDownload:false,
+      // isDownload:false,
   }
 
-  selected=()=>{
-    const aud = document.querySelector('#selected_song');
-
-    this.wavesurfer = WaveSurfer.create({
-      barWidth: 1,
-      cursorWidth: 1,
-      container: '#selectedWave',
-      backend: 'MediaElement',
-      height: 80,
-      progressColor: '#4a74a5',
-      responsive: true,
-      waveColor: '#ccc',
-      cursorColor: '#4avi74a5',
-    });
-
-    this.wavesurfer.load(aud);
-    console.log(this.state)
-
-    this.wavesurfer.play(this.state.st, this.state.et)    
-  }
-
+  /* 모달창 버튼 관련 메소드 start*/
   handleClickOpen = (e) => {
     console.log(this.state);
     this.setState({
         open: true, 
+    });
+  }
+
+  handleClose= () => {
+    this.setState({  
+        open: false, 
     });
   }
 
@@ -54,76 +40,95 @@ class SelectedDownload extends Component {
     })
   }
 
-  //저장버튼
+  handleFileInput = (e) => {
+    this.setState({
+      originalFile: e.target.files[0],
+    });
+  }
+
+  //저장버튼 -> 서버연동
   handleSubmit= (e) => {
     e.preventDefault();
+    console.log("SelectedDownload에서 서버 연동 메소드 호출");
+
+    //값 초기화
     this.setState({  
         open: false, 
-        isDownload: true,
+        userFileName:"",
     });
+
+    this.downloadData();
+    /*
+    this.downloadData()
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+    */
   } 
-  //닫기버튼 
-  handleClose= () => {
-      this.setState({  
-          open: false, 
-      });
-  }
+  
+  /* 모달창 버튼, input값 관련 메소드 end*/ 
 
-  //downloadData함수 실행 함수 -> fetch를 사용하기 때문에 사용함
-  handleUserFile = (isDownload) => {
-    if(isDownload){
-      this.downloadData(this.state.userFile);
-      //초기화
-      this.setState({
-        isDownload: false, 
-        userFile:"",
-      })
+
+  downloadData() {
+    const url = '서버url';
+
+    const formData = new FormData();
+    const {originalFile, startTime, endTime, userFileName} = this.state;
+
+    formData.append("originalFile", this.state.originalFile);
+
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
     }
+
+    const json = `{ "startTime": "${startTime}", "endTime": "${endTime}", "userFileName": "${userFileName}"}`;
+    console.log(originalFile,json);
+
+    formData.append("json", json);
+    //return postMessage(url, formData, config);
   }
 
-  //다운로드 파일 (사용자 지정 파일명 + 파일형식(임시로 m4a파일이라고 지정))
-  downloadData = (name) => {
-    let a = document.createElement('a');
-		fetch(this.state.src)
-			.then(response => {
-				response.blob().then(blob => {
-					let url = window.URL.createObjectURL(blob);
-					a.href = url;
-          a.download = name+'.m4a';  
-          a.click();
-        });
-
-		});
-  }
 
   render() {
-    const { isDownload } = this.state;
+    // const { isDownload } = this.state;
 
       return (
           <div>
-              <button variant="outlined" color="primary" type="button" onClick={this.handleClickOpen}>
+              <button variant="outlined" color="primary" onClick={this.handleClickOpen}>
                  선택구간저장
               </button>
               <Dialog 
                 open={this.state.open} 
-                fullWidth
+
                 maxWidth="md"
                 >
-                  <form onSubmit={this.handleUserFile(isDownload)}>
+                  <form onSubmit={this.handleSubmit}>
                   <DialogTitle>선택구간확인</DialogTitle>
                   <DialogContent>
                     [파일정보]
                   </DialogContent>
                   <DialogContent>
-
-                       <Typography color="textSecondary"> 사용자 지정 파일명 </Typography>
+                      <Typography color="textSecondary"> 다운로드 원본 파일 선택 </Typography>
+                        <input 
+                          type="file" 
+                          name="originalFile" 
+                          file={this.state.originalFile} 
+                          onChange={e => this.handleFileInput(e)} 
+                        />
+                  
+                      <Typography color="textSecondary"> 사용자 지정 파일명 </Typography>
                         <input
-                          name="userFile"
-                          value={this.state.userFile}
+                          name="userFileName"
+                          value={this.state.userFileName}
                           onChange={this.handleValueChange}
                         />
-                       <Typography color="textSecondary"> 구간시작(초) {this.state.st}  </Typography> 
-                       <Typography color="textSecondary"> 구간끝(초) {this.state.et}  </Typography>
+                      <Typography color="textSecondary"> 구간시작(초) {this.state.startTime}  </Typography> 
+                      <Typography color="textSecondary"> 구간끝(초) {this.state.endTime}  </Typography>
                        
 
 
@@ -139,4 +144,35 @@ class SelectedDownload extends Component {
   }
 }
 export default SelectedDownload;
+  
+  /* 브라우저에서 url음원파일을 다운로드하는 메소드
+  //downloadData함수 실행 함수 -> fetch를 사용하기 때문에 사용함
+  handleUserFile = (isDownload) => {
+    if(isDownload){
+      this.downloadData(this.state.userFileName);
+
+      //초기화
+      this.setState({
+        isDownload: false, 
+        userFileName:"",
+      })
+    }
+  }
+
+  //다운로드 파일 (사용자 지정 파일명 + 파일형식(임시로 m4a파일이라고 지정))
+  downloadData = async (name) => {
+    let a = document.createElement('a');
+    fetch(this.state.src)
+      .then(response => {
+        response.blob().then(blob => {
+          let url = window.URL.createObjectURL(blob);
+          a.href = url;
+          a.download = name+'.m4a';  
+          a.click();
+        });
+    });
+    
+
+  }
+  */
 
