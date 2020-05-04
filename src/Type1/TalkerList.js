@@ -31,11 +31,11 @@ class TalkerList extends Component {
         maxNo: 1,
         boards: [
             {
-                brdno: '예시',
+                brdno: 1,
                 talker:'코스모스', 
                 text: '코스모스는 가을에 피어요.', 
                 analysisType:'morpAPI', 
-                analysisResult:'결과물',
+                analysisResult:'',
             },
          
         ],
@@ -67,18 +67,18 @@ class TalkerList extends Component {
         const { boards } =this.state;
   
         try {
-            const response = await Axios.post("/cosmos/kStars/analysis2", {
+            const response = await Axios.post("/cosmos/kStars/analysisList", 
                 boards
-            });
+            );
             const { status, data } = response;
   
             if (status === 200) {
               //서버에서 넘어온 값들 
               console.log("값이 성공적으로 넘어왔습니다.",data)
-              this.setState({
-                  boards:boards.concat({analysisResult:data.analysisResult })
-              })
-      }
+              //const { state } = this;
+              this.setState({boards: data}, () => console.log(this.state)); 
+             
+              }
   
         } catch (error) {
               
@@ -100,11 +100,26 @@ class TalkerList extends Component {
     handleSelectRow = (row) => {
         this.setState({selectedBoard: row});
     }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        let boards = nextState.boards;
+        
+            boards.map(row =>
+                (
+                <div>
+                {/* <TalkerItem key={row.brdno} row={row} onRemove={this.handleRemove} onSelectRow={this.handleSelectRow}/> */}
+                <TalkerChips chipData={row.analysisResult}/>
+                    </div>)
+            )
+        
+        return true;
+      }
+    
   
 
     render() {
         const { boards, selectedBoard } = this.state;
-        console.log(boards)
+        //console.log(boards)
 
         return (
             <div>
