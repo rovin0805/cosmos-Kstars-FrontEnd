@@ -1,9 +1,9 @@
 import React from 'react';
 import WaveSurfer from 'wavesurfer.js';
-import regions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import SelectedDownload from './SelectedDownload';
+import color from '@material-ui/core/colors/amber';
 
 class Waveform extends React.Component {
   
@@ -17,6 +17,7 @@ class Waveform extends React.Component {
     count:0,
     showSection: false,
     showInput: false,
+    open:false,
     src: 'https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a',
   }
 
@@ -39,19 +40,7 @@ class Waveform extends React.Component {
     });
 
     this.wavesurfer.load(aud);
-    this.wavesurfer.addPlugin(regions.create({
-      regions:[
-          {
-              start:this.state.startTime,
-              end: this.state.endTime,
-              loop: true,
-              resize:true,
-              color: 'hsla(400, 100%, 30%, 0.5)'
-          }
-      ],
-   
-  })).initPlugin('regions');
-  
+
   }
 
   playIt = () => {
@@ -95,6 +84,14 @@ class Waveform extends React.Component {
       })
   }
 
+  onClickCursor = (e) => {
+    console.log("hello!!!!!!!")
+    this.setState({
+      startTime:e.clientX
+    })
+    console.log(window.event.clientX)
+  }
+
   PlayRegions = () =>{
 
     console.log("선택구간정보",this.wavesurfer.regions.list.params)
@@ -126,10 +123,14 @@ class Waveform extends React.Component {
         <button type="button" onClick={this.ZoomOut}>-</button>
         <button type="button" onClick={this.PlayRegions}>구간반복재생</button>
         {(startTime!==0.0 && endTime!==0.0 ) && <SelectedDownload st={startTime.toFixed(1)} et={endTime.toFixed(1)} src={src}/> }
-
         <div
           style={{ border: '1px solid grey', width: 900, height: 80, position: "absolute"}}
-          id="waveform"></div>
+          id="waveform" onClick={this.onClickCursor}></div>
+          {open ? 
+        <div
+          style={{border: '1px solid grey', left:this.state.startTime, width:300, height:80, position: "absolute", backgroundColor:'#F5D0A9'}}> 
+          </div> 
+          : }
         <audio
           id="song"
           src={src}
