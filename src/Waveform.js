@@ -11,13 +11,11 @@ class Waveform extends React.Component {
     zoomPixel: 10,
     startTime: 10,
     endTime: 15,
-    getX: 0.0,
-    getY:0.0,
-    getWidth:0.0,
+    RegionStartLocation:0,
+    RegionEndLocation:0,
     count:0,
-    showSection: false,
-    showInput: false,
-    open:false,
+    Region:false,
+    showRegion:false,
     src: 'https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a',
   }
 
@@ -36,7 +34,6 @@ class Waveform extends React.Component {
       progressColor: '#3B8686',
       waveColor: '#A8DBA8',
       cursorColor: '#4avi74a5',
-      
     });
 
     this.wavesurfer.load(aud);
@@ -65,41 +62,58 @@ class Waveform extends React.Component {
     this.wavesurfer.zoom(this.state.zoomPixel);
   }
 
-  handleClickOpen= (e) => {
+  handleRegion = () =>{
     this.setState({
-        open: true, 
-        endTime: this.wavesurfer.getCurrentTime(),
-    });
-  }
-
-  handleClose= () => {
-    this.setState({
-        open: false, 
-    });
-  }
-
-  SetTrue = () => {
-     this.setState({
-          showInput:true
-      })
-  }
-
-  onClickCursor = (e) => {
-    console.log("hello!!!!!!!")
-    this.setState({
-      startTime:e.clientX
+      Region:true
     })
-    console.log(window.event.clientX)
+  }
+
+  onClickCursor = (e) =>{
+    // if(this.state.count === 0){
+      this.setState({
+        startTime:this.wavesurfer.getCurrentTime(),
+        RegionStartLocation:e.clientX,
+        count:1
+      }) 
+    // }
+    // if(this.state.count === 1){
+    //   this.setState({
+    //     endTime:this.wavesurfer.getCurrentTime(),
+    //     RegionEndLocation:e.clientX,
+    //     count:0
+    //   })
+    // }
+    console.log("시작구간 위치: ", this.state.RegionStartLocation)
+    console.log("시작구간 초: ",this.state.startTime)
+    // console.log("끝구간 위치: ", this.state.RegionEndLocation)
+    // console.log("끝구간 초: ", this.state.E)
+  }
+
+  onClickStartTime = (e) => {
+    this.setState({
+      startTime:this.wavesurfer.getCurrentTime(),
+      RegionStartLocation:e.clientX
+    })
+    console.log("시작구간 위치: ", this.state.RegionStartLocation)
+    console.log("시작구간 초: ",this.state.startTime)
+  }
+
+  onClickEndTime = (e) => {
+    this.setState({
+      endTime:this.wavesurfer.getCurrentTime(),
+      RegionEndLocation:e.clientX
+    })
+    console.log("끝구간 위치: ", this.state.RegionEndLocation)
+    console.log("끝구간 초: ", this.state.E)
   }
 
   PlayRegions = () =>{
 
-    console.log("선택구간정보",this.wavesurfer.regions.list.params)
-    console.log("선택구간정보",this.wavesurfer.regions.wavesurfer.regions.list)
-    this.setState({
-      startTime:this.wavesurfer.regions.params.regions[0].start,
-      endTime:this.wavesurfer.regions.params.regions[0].end
-    })
+    // this.setState({
+    //   startTime:this.state.startTime,
+    //   endTime:this.state.endTime,
+    //   showRegion:true
+    // })
     
       this.wavesurfer.play(this.state.startTime,this.state.endTime);
       
@@ -110,7 +124,7 @@ class Waveform extends React.Component {
 //https://taehongdev.github.io/html_css_study/exam03/audio/The_Weeknd-I_Feel_It_Coming(cover_byJ.Fla).mp3
 //https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a
   render() {
-    const {startTime, endTime, src} = this.state;
+    const {startTime, endTime, src, Region, showRegion, RegionStartLocation, RegionEndLocation} = this.state;
 
     return (
       
@@ -121,16 +135,18 @@ class Waveform extends React.Component {
         <button type="button" onClick={this.playIt}>재생하기/멈추기</button>
         <button type="button" onClick={this.ZoomIn}>+</button>
         <button type="button" onClick={this.ZoomOut}>-</button>
-        <button type="button" onClick={this.PlayRegions}>구간반복재생</button>
+        <button type="button" onClick={this.handleRegion}>선택구간보기</button>
+        {/* {Region && <button type="button" onClick={this.onClickStartTime}>시작구간선택</button>}
+        {Region && <button type="button" onClick={this.onClickEndTime}>끝구간선택</button>} */}
+        {Region && <button type="button" onClick={this.PlayRegions}>구간반복재생</button>}
         {(startTime!==0.0 && endTime!==0.0 ) && <SelectedDownload st={startTime.toFixed(1)} et={endTime.toFixed(1)} src={src}/> }
         <div
           style={{ border: '1px solid grey', width: 900, height: 80, position: "absolute"}}
           id="waveform" onClick={this.onClickCursor}></div>
-          {open ? 
+          {Region && 
         <div
-          style={{border: '1px solid grey', left:this.state.startTime, width:300, height:80, position: "absolute", backgroundColor:'#F5D0A9'}}> 
-          </div> 
-          : }
+          style={{border: '1px solid grey', position:"absolute", left:this.state.startTime, width:(this.state.endTime-this.state.startTime), height:80, backgroundColor:'#F5D0A9'}}> 
+  </div> }
         <audio
           id="song"
           src={src}
