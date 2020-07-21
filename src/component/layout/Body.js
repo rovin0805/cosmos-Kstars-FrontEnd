@@ -4,9 +4,10 @@ import Container from "@material-ui/core/Container";
 import { BrowserRouter, Route } from "react-router-dom";
 
 import Intro from "../../container/intro/Intro";
-import TalkerList from "../../Type1/TalkerList";
-import GuestProjectManager from "../../container/guestProjectManager/index";
 
+import GuestProjectManager from "../../container/guestProjectManager/index";
+import MainPage from "../../container/projectMain/MainPage";
+import TalkerList from "../../Type1/TalkerList";
 
 function Body(props) {
     return (
