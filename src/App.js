@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
-
-import TalkerList from './Type1/TalkerList';
-import HeaderManager from './headerManager/HeaderManager';
+import {Header, Body, Footer} from "./component/layout/index";
 
 class App extends Component {
   render() {
     return (
       <div>
-
-        <HeaderManager/>
-        <TalkerList/>
-       
+        <Header/>
+        <Body/>
+        <Footer/>
       </div>
     )
   }
