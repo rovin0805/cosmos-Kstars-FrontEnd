@@ -111,6 +111,7 @@ class Waveform extends React.Component {
 //https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a
   render() {
     const {startTime, endTime, src} = this.state;
+    const {open} = this.state;
 
     return (
       
@@ -127,14 +128,13 @@ class Waveform extends React.Component {
           style={{ border: '1px solid grey', width: 900, height: 80, position: "absolute"}}
           id="waveform" onClick={this.onClickCursor}></div>
           {open ? 
-        <div
-          style={{border: '1px solid grey', left:this.state.startTime, width:300, height:80, position: "absolute", backgroundColor:'#F5D0A9'}}> 
-          </div> 
-          : }
+            <div style={{border: '1px solid grey', left:this.state.startTime, width:300, height:80, position: "absolute", backgroundColor:'#F5D0A9'}}/> 
+          :
         <audio
           id="song"
           src={src}
           />
+          }
           </Grid>
           </Grid>
           </div>
