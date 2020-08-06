@@ -7,6 +7,8 @@ import Intro from "../../container/intro/Intro";
 import TalkerList from "../../Type1/TalkerList";
 import Guest from "../../container/guest/index";
 import StartManager from "../../container/guest/projectManager/StartManager";
+import GuestProjectManager from "../../container/guestProjectManager/index";
+import MainPage from "../../container/projectMain/MainPage";
 
 
 function Body(props) {

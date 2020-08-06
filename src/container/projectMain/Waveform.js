@@ -2,8 +2,37 @@ import React from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import SelectedDownload from './SelectedDownload';
+import SelectedDownload from '../../SelectedDownload';
 import color from '@material-ui/core/colors/amber';
+import useStyles from '../../Type1/styles/TalkerFormCss';
+import Paper from '@material-ui/core/Paper';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Toolbar from "@material-ui/core/Toolbar";
+
+const styles = theme => ({
+  root: {
+    padding: theme.spacing(3),
+  },
+  paper: {
+    padding: theme.spacing(3, 2),
+    margin: theme.spacing(1),
+  },
+  toolbar: {
+      borderBottom: `1px solid ${theme.palette.divider}`,
+    },
+    toolbarTitle: {
+      flexGrow: 1,
+    },
+    toolbarSecondary: {
+      justifyContent: 'space-between',
+      overflowX: 'auto',
+    },
+    toolbarLink: {
+      padding: theme.spacing(1),
+      flexShrink: 0,
+    },
+});
 
 class Waveform extends React.Component {
   
@@ -123,24 +152,18 @@ class Waveform extends React.Component {
 
 //https://taehongdev.github.io/html_css_study/exam03/audio/The_Weeknd-I_Feel_It_Coming(cover_byJ.Fla).mp3
 //https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a
+
   render() {
     const {startTime, endTime, src, Region, showRegion, RegionStartLocation, RegionEndLocation} = this.state;
-
+    const { classes } = this.props;
     return (
-      
-      <div>
-        <Grid item sm={10}>
-        <Grid item sm ={3}>
-        <Typography>원본파형</Typography>
+      <div className={classes.root}>
         <button type="button" onClick={this.playIt}>재생하기/멈추기</button>
         <button type="button" onClick={this.ZoomIn}>+</button>
         <button type="button" onClick={this.ZoomOut}>-</button>
         <button type="button" onClick={this.handleRegion}>선택구간보기</button>
-        {/* {Region && <button type="button" onClick={this.onClickStartTime}>시작구간선택</button>}
-        {Region && <button type="button" onClick={this.onClickEndTime}>끝구간선택</button>} */}
-        {Region && <button type="button" onClick={this.PlayRegions}>구간반복재생</button>}
-        {(startTime!==0.0 && endTime!==0.0 ) && <SelectedDownload st={startTime.toFixed(1)} et={endTime.toFixed(1)} src={src}/> }
-        <div
+              <Grid container spacing = {3} item xs={12} style={{marginTop:20, marginBottom:15}}>
+      <div
           style={{ border: '1px solid grey', width: 900, height: 80, position: "absolute"}}
           id="waveform" onClick={this.onClickCursor}></div>
           {Region && 
@@ -152,11 +175,10 @@ class Waveform extends React.Component {
           src={src}
           />
           </Grid>
-          </Grid>
-          </div>
+         </div>
         );
       }
     }
-export default Waveform;
+export default withStyles(styles)(Waveform);
 
 /*https://github.com/katspaugh/wavesurfer.js/issues/1779 */
