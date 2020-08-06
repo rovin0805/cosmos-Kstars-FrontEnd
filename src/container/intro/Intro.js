@@ -28,7 +28,7 @@ class Intro extends Component {
         const classes = useStyles;
         return (
             <div>
-                <Container style={{marginTop: 200, }} component="main" maxWidth="xs">
+                <Container style={{marginTop:150, }} component="main" maxWidth="xs">
                     <div className={classes.paper}>
                         {/* 웹 서비스 명 */}
                         <Typography component="h1" variant="h2" align="center">
