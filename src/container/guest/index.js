@@ -31,7 +31,7 @@ class index extends Component {
                                     color="primary"
                                     style={{height: 250,}}
                                  >
-                                    KST파일이 존재하는 경우, <br/> 편집뷰어로 이동
+                                    파일 열기 <br/> 
                                 </Button>                       
                             </Link>
                         </Grid>
@@ -43,7 +43,7 @@ class index extends Component {
                                     color="primary"
                                     style={{height: 250,}}
                                  >
-                                    KST파일이 존재없는 경우, <br/> 프로젝트 생성매니저로 이동
+                                    새로 만들기 <br/>
                                 </Button>                       
                             </Link>
                         </Grid>
