@@ -4,7 +4,9 @@ import Container from "@material-ui/core/Container";
 import { BrowserRouter, Route } from "react-router-dom";
 
 import Intro from "../../container/intro/Intro";
-
+import TalkerList from "../../Type1/TalkerList";
+import Guest from "../../container/guest/index";
+import StartManager from "../../container/guest/projectManager/StartManager";
 import GuestProjectManager from "../../container/guestProjectManager/index";
 import MainPage from "../../container/projectMain/MainPage";
 import TalkerList from "../../Type1/TalkerList";
@@ -16,8 +18,11 @@ function Body(props) {
             <Container>
 
                 <Route exact path="/" component={Intro} /> {/* 인트로화면 */}
-                <Route exact path="/guest" component={GuestProjectManager} /> {/*메인화면*/}
+                <Route exact path="/guest" component={Guest} /> {/*메인화면*/}
+                <Route exact path="/guest/start" component={StartManager} /> {/*메인화면*/}
                 <Route exact path="/main" component={TalkerList} /> {/*메인화면*/}
+
+
 
             </Container>
         </div>

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-class index extends Component {
+class Detail extends Component {
     render() {
         return (
             <div>
-                헤더마법사
+                degtail
             </div>
         );
     }
 }
 
-export default index;
+export default Detail;
