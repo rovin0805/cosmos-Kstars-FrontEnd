@@ -50,11 +50,13 @@ class Header extends Component {
             <Grid container sm="4" />
               <Grid item xs={3} />
               <Grid item xs={6}>
+              
               <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
                   <Button>전사 모드</Button>
                   <Button>형태소 분석 모드</Button>
                   <Button>브라우징 모드</Button>
-                  </Toolbar>
+              </Toolbar>
+                
               </Grid>
               <Grid item xs={3}>
               </Grid>
