@@ -5,7 +5,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import {Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import useStyles from './styles/useStyles';
+import useStyles from './headerManager/styles/useStyles';
 
 
 
@@ -36,7 +36,7 @@ class index extends Component {
                             </Link>
                         </Grid>
                         <Grid item xs="6">
-                            <Link to="/guest/start" variant="body2">
+                            <Link to="/start/project" variant="body2">
                                 <Button 
                                     fullWidth
                                     variant="outlined"

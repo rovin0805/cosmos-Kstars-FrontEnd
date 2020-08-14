@@ -3,10 +3,11 @@ import React from 'react';
 import Container from "@material-ui/core/Container";
 import { BrowserRouter, Route } from "react-router-dom";
 
-import Intro from "../../container/start/start";
+import Login from "../../container/login/login";
 import TalkerList from "../../container/main/Type1/TalkerList";
-import Guest from "../../container/guest/index";
-import StartManager from "../../container/guest/projectManager/StartManager";
+import Start from "../../container/start/index";
+import ProjectManager from "../../container/start/projectManager";
+import HeaderManager from "../../container/start/headerManager";
 import MainPage from "../../container/main/MainPage";
 
 
@@ -16,9 +17,10 @@ function Body(props) {
         <div>
             <Container>
 
-                <Route exact path="/" component={Intro} /> {/* 인트로화면 */}
-                <Route exact path="/guest" component={Guest} /> {/*메인화면*/}
-                <Route exact path="/guest/start" component={StartManager} /> {/*메인화면*/}
+                <Route exact path="/login" component={Login} /> {/* 인트로화면 */}
+                <Route exact path="/start" component={Start} /> {/*메인화면*/}
+                <Route exact path="/start/project" component={ProjectManager} /> {/*ProjectManager 화면*/}
+                <Route exact path="/start/header" component={HeaderManager} /> {/*HeaderManager 화면*/}
                 <Route exact path="/main" component={TalkerList} /> {/*메인화면*/}
 
             </Container>

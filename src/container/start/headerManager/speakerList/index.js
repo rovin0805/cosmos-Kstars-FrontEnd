@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import Detail from './Detail';
-import List from './List';
 import AddForm from './AddForm';
-
 import Grid from '@material-ui/core/Grid';
-
 
 class index extends Component {
     state = {
@@ -57,29 +53,8 @@ class index extends Component {
                     <Grid
                         style={{marginRight:10,}}
                     >
-                        <table border="1">
-                            <tbody>
-                            <tr align="center">
-                                <td width="20">no</td>
-                                <td width="50">코드</td>
-                                <td width="50">역할</td>
-                            </tr>
-                            {
-                                ID.map(row =>
-                                    (<List key={row.no} row={row}/>)
-                                )
-                            }
-                            </tbody>
-                        </table>
-                        
+                        {"테이블 구현"}
                     </Grid>
-
-                    <Grid
-                        style={{marginRight:10,}}
-                    >
-                        <Detail/>
-                    </Grid>
-                        
                         
                 </Grid>
             </div>

@@ -3,21 +3,20 @@ import React, { Component } from 'react';
 import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {Link} from 'react-router-dom';
+
+
 import TextField from "@material-ui/core/TextField";
 import Typography from '@material-ui/core/Typography';
 import Input from '@material-ui/core/Input';
 import Grid from '@material-ui/core/Grid';
 
-import useStyles from '../styles/useStyles';
-import SpeakerList from './SpeakerList/index';
+import useStyles from './styles/useStyles';
+import SpeakerList from './speakerList/index';
 
-class StartManager extends Component {
+class HeaderManager extends Component {
     state={
         open: false,
-
-        projectName: "",
-        audioFile: null,
 
         KStars :[
             {
@@ -77,13 +76,6 @@ class StartManager extends Component {
         this.setState(nextState);
     }
 
-    //file input 
-    handleFileInput = (e) => {
-        this.setState({
-            audioFile: e.target.files[0],
-        });
-    }
-
     //서버 연동 
     handleFormSubmit = (e) => {
         e.preventDefault();
@@ -94,20 +86,20 @@ class StartManager extends Component {
 
 
     render() {
-        const {projectName, audioFile} = this.state;
-        const {handleValueChange, handleFileInput, handleFormSubmit} = this;
+        const {handleValueChange, handleFormSubmit} = this;
         const classes = useStyles;
 
         return (
             <div>
               
               <Container style={{marginTop: 150, }} component="main" maxWidth="md">
+
                     {/* page title */}
                     <Typography component="h1" variant="h2" align="center">
                         KSTARS
                     </Typography>
 
-                    {/* kst form : 프로젝트 명, kst 정보, 음성파일 */}
+                    {/* kst form : kst 정보 */}
                     <form onSubmit={handleFormSubmit}>
                     <Grid
                         container
@@ -116,30 +108,6 @@ class StartManager extends Component {
                         alignItems="left"
                         spacing={3}
                         >
-                            
-                        {/* 프로젝트 명 start */}
-                        <Grid
-                            container
-                            direction="row"
-                            style={{marginTop:30}}
-                            >
-                            <Grid xs="2">
-                                <Typography body2 style={{marginTop:20,}}>프로젝트 명</Typography>
-                            </Grid>
-                            <Grid xs="9">
-                                <TextField 
-                                    required 
-                                    label="프로젝트 명" 
-                                    name="projectName"
-                                    value={projectName}
-                                    onChange={handleValueChange}
-                                    helperText="프로젝트 명을 기재해주세요."
-                                    fullWidth
-                                    style={{marginLeft:10,}}
-                                    /><br/>
-                            </Grid>
-                        </Grid>
-                        {/* 프로젝트 명 end */}
 
                         {/* KST 정보 start*/}
                         <Grid
@@ -165,43 +133,21 @@ class StartManager extends Component {
                                     <TextField defaultValue="00110110" disabled></TextField>
                                 </Grid>
                             </Grid>
+
                             {/* header (헤더정보) */}
                             <Grid container direction="column" alignItems="baseline">
                                 <Typography style={{marginTop: 20, width: 100,}}>헤더정보</Typography>
                                 <Grid style={{marginLeft: 40,}}>
-                                    {/* <HeaderForm></HeaderForm> */}
+                                    {"헤더정보입력 구현"}
                                 </Grid>
                             </Grid>
 
                         </Grid>
-                        {/* KST 파일 생성 폼 end*/}
                             
-                        {/* 음성파일 등록 start */}
-                        <Grid
-                            container
-                            direction="row"
-                            style={{marginTop:30,}}
-                            >
-                            <Grid xs="2">
-                                <Typography body2 style={{marginTop:20,}}>음성파일 등록</Typography>
-                            </Grid>
-                                <Grid xs="9">
-                                <Input 
-                                    type="file" 
-                                    name="audioFile" 
-                                    file={audioFile}
-                                    onChange={e => handleFileInput(e)} 
-                                    fullWidth
-                                    style={{margin:10,}}
-                                    />
-                                </Grid>
-                            </Grid>
-                            {/* 음성파일 등록 end */}
-
-
+                        {/* form action */}
                         <Grid>
-                            <Button variant="outlined" color="primary">취소</Button>
-                            <Button type="submit" variant="outlined" color="primary">시작하기</Button>
+                            <Link to="/start/project"><Button variant="outlined" color="primary">이전</Button></Link>
+                            <Link to="/main"><Button type="submit" variant="outlined" color="primary">시작하기</Button></Link>
                         </Grid>
 
                     </Grid>
@@ -214,4 +160,4 @@ class StartManager extends Component {
     }
 }
 
-export default StartManager;
+export default HeaderManager;
