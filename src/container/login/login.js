@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import useStyles from './styles/useStyles';
 
-
 import Button from '@material-ui/core/Button';
 
 import TextField from '@material-ui/core/TextField';
 
-
 import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
-
 
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -91,7 +88,7 @@ class Intro extends Component {
                         </form>
 
                         {/* 게스트이용 */}
-                        <Link to={"/guest"}>
+                        <Link to={"/start"}>
                             <Button
                                 fullWidth
                                 variant="outlined"
