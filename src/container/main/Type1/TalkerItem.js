@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import useStyles from './styles/TalkerItemCss';
-import SentenceAnalysis from '../Type1/checkType/SentenceAnalysis';
 
 /*
 메소드 정리
@@ -114,25 +113,10 @@ class TalkerItem extends Component {
                       alignItems="center"
                     >
 
-                      {/* <Button variant="contained" color="primary" style={{ margin: 10 , padding: 5}} onClick={this.handleRemove}>
-                        X
-                      </Button> */}
-
-                      <Button variant="outlined" color="primary" style={{padding: 5}} onClick={this.handleSentenceClick}>
-                        {isSentence ? '닫기' : '분석상세보기'}
-                      </Button>
-
                     </Grid>
                     {/* 삭제, 분석상세보기 버튼 end */}
 
                 </Grid>
-
-                {/* 체크1-문장분석결과 */}
-                {isSentence &&               
-                  <Grid style={{marginTop: 20}}>
-                    <SentenceAnalysis/>
-                  </Grid>
-                }
           
               </Paper>
             

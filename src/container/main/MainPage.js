@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import WaveformAnalysis from '../../Type1/checkType/WaveformAnalysis';
+import WaveformAnalysis from '../main/Type1/checkType/WaveformAnalysis';
 import WaveFrom from './Waveform';
-import TalkerForm from '../../Type1/TalkerForm'
+import TalkerForm from '../main/Type1/TalkerForm';
 
 class MainPage extends Component {
   render() {
@@ -18,7 +18,7 @@ class MainPage extends Component {
       {/* 파형창 start */}
       <Typography variant="h4">파형</Typography>
       <WaveFrom />
-      <Typography variant="h4">입력창</Typography>
+      <Typography variant="h4">전사창</Typography>
         {/* <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData}/> */}
       </Grid>
       </div>

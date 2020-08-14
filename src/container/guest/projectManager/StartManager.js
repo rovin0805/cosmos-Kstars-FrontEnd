@@ -11,7 +11,6 @@ import Grid from '@material-ui/core/Grid';
 
 import useStyles from '../styles/useStyles';
 import SpeakerList from './SpeakerList/index';
-import HeaderForm from './HeaderForm';
 
 class StartManager extends Component {
     state={
@@ -170,7 +169,7 @@ class StartManager extends Component {
                             <Grid container direction="column" alignItems="baseline">
                                 <Typography style={{marginTop: 20, width: 100,}}>헤더정보</Typography>
                                 <Grid style={{marginLeft: 40,}}>
-                                    <HeaderForm></HeaderForm>
+                                    {/* <HeaderForm></HeaderForm> */}
                                 </Grid>
                             </Grid>
 
