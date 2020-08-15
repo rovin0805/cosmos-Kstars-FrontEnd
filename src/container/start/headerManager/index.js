@@ -76,12 +76,14 @@ class HeaderManager extends Component {
         this.setState(nextState);
     }
 
-    //서버 연동 
+    //서버 연동 -> 데이터베이스가 없으므로 ^^ localStrorage에 저장. 
     handleFormSubmit = (e) => {
         e.preventDefault();
-  
-        console.log("handleFormSubmit 서버연동 메소드 ");
-        console.log(this.state)
+
+        console.log("handleFormSubmit in headerManager");
+
+        //입력된 헤더 정보 저장
+
     }
 
 
@@ -147,7 +149,7 @@ class HeaderManager extends Component {
                         {/* form action */}
                         <Grid>
                             <Link to="/start/project"><Button variant="outlined" color="primary">이전</Button></Link>
-                            <Link to="/main"><Button type="submit" variant="outlined" color="primary">시작하기</Button></Link>
+                            <Link to ="/main"><Button type="submit" variant="outlined" color="primary">시작하기</Button></Link>
                         </Grid>
 
                     </Grid>
