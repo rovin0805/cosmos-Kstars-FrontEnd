@@ -34,6 +34,9 @@ class index extends Component {
     handleFormSubmit = (e) => {
         e.preventDefault();
 
+        localStorage.setItem("projectName", this.state.projectName);
+        localStorage.setItem("audioFile", this.state.audioFile);
+
     }
 
     render() {
@@ -61,7 +64,7 @@ class index extends Component {
                     </Grid>
                     <Grid xs="9">
                         <TextField 
-                            required 
+                            required
                             label="프로젝트 명" 
                             name="projectName"
                             value={projectName}
