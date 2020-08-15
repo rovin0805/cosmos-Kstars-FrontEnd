@@ -14,7 +14,7 @@ class SelectedDownload extends Component {
       endTime: this.props.et,
       src: this.props.src,
 
-      originalFile:null,
+      originalFile: localStorage.audioFile,
       userFileName: "", //사용자지정파일명
       open: false, // dialog 창이 열려있는지 유무
       // isDownload:false,
@@ -23,6 +23,7 @@ class SelectedDownload extends Component {
   /* 모달창 버튼 관련 메소드 start*/
   handleClickOpen = (e) => {
     console.log(this.state);
+
     this.setState({
         open: true, 
     });
@@ -40,16 +41,11 @@ class SelectedDownload extends Component {
     })
   }
 
-  handleFileInput = (e) => {
-    this.setState({
-      originalFile: e.target.files[0],
-    });
-  }
 
   //저장버튼 -> 서버연동
   handleSubmit= (e) => {
     e.preventDefault();
-    console.log("SelectedDownload에서 서버 연동 메소드 호출");
+    console.log("handelSubmit in SelectedDownload");
 
     //값 초기화
     this.setState({  
@@ -87,7 +83,7 @@ class SelectedDownload extends Component {
     }
 
     const json = `{ "startTime": "${startTime}", "endTime": "${endTime}", "userFileName": "${userFileName}"}`;
-    console.log(originalFile,json);
+    console.log("send server >> " + originalFile,json);
 
     formData.append("json", json);
     //return postMessage(url, formData, config);
@@ -96,6 +92,7 @@ class SelectedDownload extends Component {
 
   render() {
     // const { isDownload } = this.state;
+    const { originalFile } = this.state;
 
       return (
           <div>
@@ -113,13 +110,8 @@ class SelectedDownload extends Component {
                     [파일정보]
                   </DialogContent>
                   <DialogContent>
-                      <Typography color="textSecondary"> 다운로드 원본 파일 선택 </Typography>
-                        <input 
-                          type="file" 
-                          name="originalFile" 
-                          file={this.state.originalFile} 
-                          onChange={e => this.handleFileInput(e)} 
-                        />
+                      <Typography color="textSecondary"> 다운로드 원본 파일 </Typography>
+                        {""+originalFile}
                   
                       <Typography color="textSecondary"> 사용자 지정 파일명 </Typography>
                         <input
@@ -129,8 +121,6 @@ class SelectedDownload extends Component {
                         />
                       <Typography color="textSecondary"> 구간시작(초) {this.state.startTime}  </Typography> 
                       <Typography color="textSecondary"> 구간끝(초) {this.state.endTime}  </Typography>
-                       
-
 
                   </DialogContent>
                   <DialogActions>
