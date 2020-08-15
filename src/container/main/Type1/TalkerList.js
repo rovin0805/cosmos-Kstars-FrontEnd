@@ -44,6 +44,7 @@ class TalkerList extends Component {
     
     handleGetData = (data,brdno) => {
        console.log("handleGetData에 값이 들어왔나요? ", data)
+
         if (!brdno) {            // Insert
             this.setState({
                 maxNo: this.state.maxNo+1,

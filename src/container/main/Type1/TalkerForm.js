@@ -8,6 +8,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import useStyles from './styles/TalkerFormCss';
 import WaveformAnalysis from '../Type1/checkType/WaveformAnalysis';
+
 import Axios from 'axios';
 /*
 TalkerForm 컴포넌트
@@ -29,8 +30,58 @@ class TalkerForm extends Component {
     text:'',
     analysisType:'',
     isWaveform: false,
+
+    timerCount:1000*6,
   }
   
+  componentDidMount(){
+    localStorage.setItem("textStatus", "NOTENTERED");
+    localStorage.setItem("textBefore", "");
+
+    /*
+      textStatus
+
+      NOTENTERED 키보드미입력(1분) 
+      REQUIREDAUTO 강제저장(10분) 
+      COMPLETED 저장완료상태
+
+    */
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevProps.timerCount !== this.state.timerCount){
+      clearInterval(this.interval);
+      this.interval = setInterval(this.handleSave, this.state.timerCount);
+    }
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.interval);
+  }
+
+  //자동 저장 
+  handleSave = () => {
+    const {text} = this.state;
+
+    if(localStorage.textBefore === text){
+      localStorage.setItem("textStatus", "NOTENTERED");
+      this.setState({
+        timerCount: 1000*6,
+      });
+
+    }
+    else {
+      localStorage.setItem("textBefore", text);
+      localStorage.setItem("textStatus", "REQUIREDAUTO");
+      this.setState({
+        timerCount: 1000*60,
+      });
+    }
+
+    console.log("textStatus "+ localStorage.textStatus+", timerCount "+ this.state.timerCount);
+
+  }
+
   //수정해야할 분석창이 넘어왔을 때
   shouldComponentUpdate(nextProps, nextState) {
     let selectedBoard = nextProps.selectedBoard;
@@ -59,7 +110,7 @@ class TalkerForm extends Component {
   handleChange = (e) => {
     this.setState({
         [e.target.name]: e.target.value
-    })
+    });
   }
 
   handleSubmit = async (e) => {
@@ -103,6 +154,7 @@ class TalkerForm extends Component {
     });
   }
 
+
   render() {
     const classes = useStyles.bind();
     const {isWaveform} = this.state;
@@ -132,22 +184,23 @@ class TalkerForm extends Component {
                 </Grid>
 
                 <Grid item xs ={6}>
-                      <TextField
-                        label="발화내용"
-                        style={{ margin: 8 }}
-                        placeholder="분석하고자 하는 텍스트를 입력하세요 ..."
-                        helperText="분석하기 버튼을 누르세요"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        InputLabelProps={{                                 
-                          shrink: true,
-                          }}
-
-                        name="text"
-                        value={this.state.text}
-                        onChange={this.handleChange}
-                       /> 
+                  <div>
+                    <TextField
+                      label="발화내용"
+                      style={{ margin: 8 }}
+                      placeholder="분석하고자 하는 텍스트를 입력하세요 ..."
+                      helperText="분석하기 버튼을 누르세요"
+                      fullWidth
+                      margin="normal"
+                      variant="outlined"
+                      InputLabelProps={{                                 
+                        shrink: true,
+                      }}
+                      name="text"
+                      value={this.state.text}
+                      onChange={this.handleChange}
+                  /> 
+                  </div>
                 </Grid>
 
                     <Grid container spacing= {3} item xs = {3} >

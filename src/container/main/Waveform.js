@@ -2,13 +2,13 @@ import React from 'react';
 import WaveSurfer from 'wavesurfer.js';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import SelectedDownload from './selection/SelectedDownload';
 import color from '@material-ui/core/colors/amber';
 import useStyles from '../main/Type1/styles/TalkerItemCss';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Toolbar from "@material-ui/core/Toolbar";
+import SelectedDownload from "./selection/SelectedDownload";
 
 const styles = theme => ({
   root: {
@@ -161,7 +161,7 @@ class Waveform extends React.Component {
         <button type="button" onClick={this.playIt}>재생하기/멈추기</button>
         <button type="button" onClick={this.ZoomIn}>+</button>
         <button type="button" onClick={this.ZoomOut}>-</button>
-        <button type="button" onClick={this.handleRegion}>선택구간보기</button>
+        <button type="button" onClick={this.handleRegion}><SelectedDownload/></button>
               <Grid container spacing = {3} item xs={12} style={{marginTop:20, marginBottom:15}}>
       <div
           style={{ border: '1px solid grey', width: 900, height: 80, position: "absolute"}}
