@@ -14,6 +14,7 @@ class Waveform extends React.Component {
     startx:0,
     startY:0,
     Region:false,
+    Repeat:false,
     src: 'https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a',
   }
 
@@ -66,13 +67,9 @@ class Waveform extends React.Component {
 } 
 
   PlayRegions = () =>{
-    
-    // this.setState({
-    //   Region:true
-    // })
-
-      this.wavesurfer.play(this.state.startTime,this.state.endTime);
-      
+  
+      this.wavesurfer.play(this.state.startTime,this.state.endTime);  
+  
       console.log("재생하는 시작 구간: ", this.state.startTime);
       console.log("재생하는 끝 구간: ",this.state.endTime);
   }
