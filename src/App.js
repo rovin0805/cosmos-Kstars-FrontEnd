@@ -8,7 +8,7 @@ class App extends Component {
     return (
       <div>
         {/* <Header/> */}
-        <Route exact path="/main" component={Header} /> {/*메인화면*/}
+        <Route exact path="/main" component={Header} /> 
         <Body/>
         <Footer/>
       </div>
