@@ -1,38 +1,9 @@
 import React from 'react';
 import WaveSurfer from 'wavesurfer.js';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import color from '@material-ui/core/colors/amber';
-import useStyles from '../main/Type1/styles/TalkerItemCss';
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Toolbar from "@material-ui/core/Toolbar";
-import SelectedDownload from "./selection/SelectedDownload";
+import useStyles from '../styles/TalkerFormCss';
+import SelectedDownload from "../selection/SelectedDownload";
 
-const styles = theme => ({
-  root: {
-    padding: theme.spacing(3),
-  },
-  paper: {
-    padding: theme.spacing(3, 2),
-    margin: theme.spacing(1),
-  },
-  toolbar: {
-      borderBottom: `1px solid ${theme.palette.divider}`,
-    },
-    toolbarTitle: {
-      flexGrow: 1,
-    },
-    toolbarSecondary: {
-      justifyContent: 'space-between',
-      overflowX: 'auto',
-    },
-    toolbarLink: {
-      padding: theme.spacing(1),
-      flexShrink: 0,
-    },
-});
 
 class Waveform extends React.Component {
   
@@ -155,15 +126,12 @@ class Waveform extends React.Component {
 
   render() {
     const {startTime, endTime, src, Region, showRegion, RegionStartLocation, RegionEndLocation} = this.state;
-    const { classes } = this.props;
+    const classes = useStyles.bind();
     return (
-      <div className={classes.root}>
-        <button type="button" onClick={this.playIt}>재생하기/멈추기</button>
-        <button type="button" onClick={this.ZoomIn}>+</button>
-        <button type="button" onClick={this.ZoomOut}>-</button>
-        <button type="button" onClick={this.handleRegion}><SelectedDownload/></button>
-              <Grid container spacing = {3} item xs={12} style={{marginTop:20, marginBottom:15}}>
-      <div
+      <div>
+      <Grid container spacing={3}>
+        <Grid item xs={9}>
+        <div
           style={{ border: '1px solid grey', width: 900, height: 80, position: "absolute"}}
           id="waveform" onClick={this.onClickCursor}></div>
           {Region && 
@@ -174,11 +142,19 @@ class Waveform extends React.Component {
           id="song"
           src={src}
           />
-          </Grid>
-         </div>
+        </Grid>
+        <Grid item xs={3}>
+        <button type="button" onClick={this.playIt}>재생하기/멈추기</button>
+        <button type="button" onClick={this.ZoomIn}>ZoomIn</button>
+        <button type="button" onClick={this.ZoomOut}>ZoomOut</button>
+        <SelectedDownload/>
+        </Grid>
+        <Grid item xs={12}></Grid>
+      </Grid>
+    </div>
         );
       }
     }
-export default withStyles(styles)(Waveform);
+export default Waveform;
 
 /*https://github.com/katspaugh/wavesurfer.js/issues/1779 */

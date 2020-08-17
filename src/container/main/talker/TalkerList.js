@@ -6,6 +6,7 @@ import TalkerForm from './TalkerForm';
 import TalkerItem from './TalkerItem';
 import Axios from 'axios';
 import TalkerChips from './TalkerChips';
+import Waveform from '../waveform/Waveform';
 
 /*
 TalkerList 컴포넌트
@@ -129,14 +130,18 @@ class TalkerList extends Component {
                     direction="column"
                     justify="space-between"
                     >
-                {/* 입력창 start */}
-                <Typography variant="h4">입력창</Typography>
-               
-                <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData}/>
-                {/* 입력창 end */}
+                {/* 파형창 start */}
+                <Typography variant="h4">파형창</Typography>
+                <Waveform />
+                {/* 파형창 end */}
 
-                {/* 분석창 start */}
-                <Typography variant="h4">분석창</Typography>
+                 {/* 입력창 start */}
+                 <Typography variant="h4">입력창</Typography>
+               <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData}/>
+               {/* 입력창 end */}
+
+                {/* 전사창 start */}
+                <Typography variant="h4">전사창</Typography>
                 <Button variant="contained" color="secondary"  style={{ margin: 10 , padding: 5}} onClick={this.handleConveyData}>
                             분석하기
                         </Button>
@@ -149,9 +154,8 @@ class TalkerList extends Component {
                                 </div>)
                         )
                     }
-                {/* 분석창 end */}
+                {/* 전사창 end */}
                 </Grid>
-             
             </div>
         );
     }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import useStyles from './styles/TalkerChipsCss';
+import useStyles from '../styles/TalkerChipsCss';
 import Paper from '@material-ui/core/Paper';
 
 class TalkerChips extends Component {

@@ -6,9 +6,7 @@ import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import useStyles from './styles/TalkerFormCss';
-import WaveformAnalysis from '../Type1/checkType/WaveformAnalysis';
-
+import useStyles from '../styles/TalkerFormCss';
 import Axios from 'axios';
 /*
 TalkerForm 컴포넌트
@@ -189,7 +187,6 @@ class TalkerForm extends Component {
                       label="발화내용"
                       style={{ margin: 8 }}
                       placeholder="분석하고자 하는 텍스트를 입력하세요 ..."
-                      helperText="분석하기 버튼을 누르세요"
                       fullWidth
                       margin="normal"
                       variant="outlined"
@@ -227,34 +224,23 @@ class TalkerForm extends Component {
                       </Grid>
                       {/* 분석유형 선택 end */}
 
-                      {/* 입력, 파형 버튼 start */}
+                      {/* 입력버튼 start */}
                       <Grid item sm={1}
                       container
                       direction="column"
                       justify="flex-end"
                       alignItems="center"
                       >
-                        <Button type="submit" variant="contained" color="secondary" className={classes.button} style={{ margin: 10 , padding: 5}}>
-                            입력하기
+                        <Button type="submit" variant="contained" color="secondary" className={classes.button} style={{ margin: 20 , padding: 10}}>
+                            입력
                         </Button>
 
-                        <Button variant="outlined" color="primary" style={{padding: 5}} onClick={this.handleWaveformClick}>
-                        {isWaveform ? '닫기' : '파형보기'}
-                      </Button>
-
                       </Grid>
-                        {/* 입력, 파형 버튼 end */}
+                        {/* 입력버튼 end */}
 
                     </Grid>
                   </Grid>
-                       {/* 파형분석창-checkType */}  
-                       {isWaveform &&               
-                  <Grid>
-                     <WaveformAnalysis/>
-                  </Grid>
-                }
-                {/*Data값 서버연동 컴포넌트에 넘겨주기*/}
-                
+              
               </Paper>
               </form>
       );
