@@ -10,8 +10,8 @@ import { Typography } from "@material-ui/core";
 
 class SelectedDownload extends Component {
   state={
-      startTime: this.props.st,
-      endTime: this.props.et,
+      startTime: this.props.startTime,
+      endTime: this.props.endTime,
       src: this.props.src,
 
       originalFile: localStorage.audioFile,
