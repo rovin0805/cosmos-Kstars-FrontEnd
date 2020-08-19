@@ -22,8 +22,9 @@ class SelectedDownload extends Component {
 
   /* 모달창 버튼 관련 메소드 start*/
   handleClickOpen = (e) => {
-    console.log(this.state);
-
+    //console.log(this.state);
+    console.log("selectedDownload로 넘어간 시각 값: ",this.props.startTime)
+  
     this.setState({
         open: true, 
     });
@@ -82,7 +83,7 @@ class SelectedDownload extends Component {
       },
     }
 
-    const json = `{ "startTime": "${startTime}", "endTime": "${endTime}", "userFileName": "${userFileName}"}`;
+    const json = `{ "startTime": "${this.props.startTime}", "endTime": "${this.props.endTime}", "userFileName": "${userFileName}"}`;
     console.log("send server >> " + originalFile,json);
 
     formData.append("json", json);
@@ -119,8 +120,8 @@ class SelectedDownload extends Component {
                           value={this.state.userFileName}
                           onChange={this.handleValueChange}
                         />
-                      <Typography color="textSecondary"> 구간시작(초) {this.state.startTime}  </Typography> 
-                      <Typography color="textSecondary"> 구간끝(초) {this.state.endTime}  </Typography>
+                      <Typography color="textSecondary"> 구간시작(초) {this.props.startTime}  </Typography> 
+                      <Typography color="textSecondary"> 구간끝(초) {this.props.endTime}  </Typography>
 
                   </DialogContent>
                   <DialogActions>

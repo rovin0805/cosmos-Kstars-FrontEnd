@@ -11,7 +11,7 @@ class Waveform extends React.Component {
     zoomPixel: 10,
     startTime: 10,
     endTime: 15,
-    startx:0,
+    startx:23,
     startY:0,
     Region:false,
     Repeat:false,
