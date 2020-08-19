@@ -141,6 +141,7 @@ class HeaderManager extends Component {
                                 <Typography style={{marginTop: 20, width: 100,}}>헤더정보</Typography>
                                 <Grid style={{marginLeft: 40,}}>
                                     {"헤더정보입력 구현"}
+                                    {"asdf"+localStorage.audioFile}
                                 </Grid>
                             </Grid>
 
