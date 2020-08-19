@@ -3,8 +3,6 @@ import WaveSurfer from 'wavesurfer.js';
 import Grid from '@material-ui/core/Grid';
 import useStyles from '../styles/TalkerFormCss';
 import SelectedDownload from "../selection/SelectedDownload";
-import {post} from "axios";
-
 
 class Waveform extends React.Component {
   
@@ -16,7 +14,7 @@ class Waveform extends React.Component {
     startY:0,
     Region:false,
     Repeat:false,
-    src: "",
+    src: localStorage.audioFile,
   }
 
   mydiv = null;

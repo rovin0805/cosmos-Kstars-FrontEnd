@@ -76,13 +76,12 @@ class HeaderManager extends Component {
         this.setState(nextState);
     }
 
-    //서버 연동 -> 데이터베이스가 없으므로 ^^ localStrorage에 저장. 
+    //서버 연동 -> 데이터베이스가 없으므로 localStrorage에 저장. 
     handleFormSubmit = (e) => {
         e.preventDefault();
 
         console.log("handleFormSubmit in headerManager");
 
-        //입력된 헤더 정보 저장
 
     }
 
