@@ -103,7 +103,7 @@ class Waveform extends React.Component {
             <input placeholder="시작구간- ex)4.0" name="startTime" onChange={this.handleChange}/>
             <input placeholder="끝구간- ex)7.0" name="endTime" onChange={this.handleChange}/>
             <button type="button" onClick={this.PlayRegions}>선택 구간 재생</button>
-        <SelectedDownload/>
+        <SelectedDownload startTime={startTime} endTime={endTime}/>
         </Grid>
         <Grid item xs={12}></Grid>
       </Grid>
