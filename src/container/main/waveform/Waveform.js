@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import useStyles from '../styles/TalkerFormCss';
 import SelectedDownload from "../selection/SelectedDownload";
 
-
 class Waveform extends React.Component {
   
   state = {
@@ -15,12 +14,13 @@ class Waveform extends React.Component {
     startY:0,
     Region:false,
     Repeat:false,
-    src: 'https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a',
+    src: localStorage.audioFile,
   }
 
   mydiv = null;
 
   componentDidMount() {
+
     const aud = document.querySelector('#song');
 
     this.wavesurfer = WaveSurfer.create({

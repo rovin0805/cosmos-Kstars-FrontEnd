@@ -8,12 +8,14 @@ import Grid from '@material-ui/core/Grid';
 import Button from "@material-ui/core/Button";
 
 import {Link} from 'react-router-dom';
+import {post} from 'axios';
+
 
 class index extends Component {
     state = {
         projectName: "",
         audioFile: null,
-
+        convertToLink: "",
     }
 
     // form state 관리 
@@ -31,13 +33,39 @@ class index extends Component {
     }
 
     // handleFormSubmit
-    handleFormSubmit = (e) => {
+    handleFormSubmit = async (e) => {
         e.preventDefault();
+        
+        const url = "/cosmos/kStars/audioFile/upload";    
+        const formData = new FormData();
+    
+        formData.append("audioFile", this.state.audioFile);
+    
+        const config = {
+          headers: {
+            "Content-type": "multipart/form-data",
+          },
+        };
+
+        try {
+            const response = await post(url, formData, config);
+
+            console.log(response.data);
+
+            this.setState({
+                convertToLink: response.data,
+            });
+
+            
+        } catch (err) {
+            console.log(err);
+        }
 
         localStorage.setItem("projectName", this.state.projectName);
-        localStorage.setItem("audioFile", this.state.audioFile);
+        localStorage.setItem("audioFile", this.state.convertToLink);
 
     }
+
 
     render() {
         const { projectName, audioFile } = this.state;

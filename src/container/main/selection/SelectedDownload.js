@@ -23,7 +23,6 @@ class SelectedDownload extends Component {
   /* 모달창 버튼 관련 메소드 start*/
   handleClickOpen = (e) => {
     //console.log(this.state);
-    console.log("selectedDownload로 넘어간 시각 값: ",this.props.startTime)
   
     this.setState({
         open: true, 
