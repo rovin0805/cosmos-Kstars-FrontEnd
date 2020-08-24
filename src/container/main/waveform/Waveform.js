@@ -15,6 +15,8 @@ class Waveform extends React.Component {
     Region:false,
     Repeat:false,
     src: localStorage.audioFile,
+    // src: "https://aws-kstars-file.s3.ap-northeast-2.amazonaws.com/kstars/8d817137-6c05-4769-bc17-4299f0ff7450",
+
   }
 
   mydiv = null;

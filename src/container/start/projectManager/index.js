@@ -16,6 +16,7 @@ class index extends Component {
         projectName: "",
         audioFile: null,
         convertToLink: "",
+        isLoading: false,
     }
 
     // form state 관리 
@@ -54,21 +55,21 @@ class index extends Component {
 
             this.setState({
                 convertToLink: response.data,
+                isLoading: true,
             });
 
+            localStorage.setItem("projectName", this.state.projectName);
+            localStorage.setItem("audioFile", this.state.convertToLink);
             
         } catch (err) {
             console.log(err);
         }
 
-        localStorage.setItem("projectName", this.state.projectName);
-        localStorage.setItem("audioFile", this.state.convertToLink);
-
     }
 
 
     render() {
-        const { projectName, audioFile } = this.state;
+        const { projectName, audioFile, isLoading } = this.state;
         const { handleValueChange, handleFileInput, handleFormSubmit } = this;
 
         return (
@@ -130,7 +131,8 @@ class index extends Component {
                     {/* form action */}
                     <Grid>
                         <Link to="/start"><Button variant="outlined" color="primary">이전</Button></Link>
-                        <Link to="/start/header"><Button type="submit" variant="outlined" color="primary">헤더 정보 입력 페이지로 이동</Button></Link>
+                        {isLoading && <Link to="/start/header"><Button type="submit" variant="outlined" color="primary">헤더 정보 입력 페이지로 이동</Button></Link>}
+                        {!isLoading && <Button type="submit" variant="outlined" color="primary">헤더 정보 입력 페이지로 이동</Button> }
                     </Grid>
             </form>
             

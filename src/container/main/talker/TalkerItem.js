@@ -100,7 +100,6 @@ class TalkerItem extends Component {
 
                        />           
                       </Grid>
-            
                       </Grid>
                       {/* 발화내용 end */}
 

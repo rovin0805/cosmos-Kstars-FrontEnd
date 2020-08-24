@@ -40,7 +40,84 @@ class TalkerList extends Component {
             },
          
         ],
-         selectedBoard:{},
+        selectedBoard:{},
+
+        KStars :[
+            {
+                m_Audio: {
+                    AudioCurrentPosition: 0,
+                    AudioFileIndex: 0,
+                    AudioPath: [
+                      "string"
+                    ]
+                  },
+                  m_KTierMorpVer2: {
+                    dataType: "string",
+                    datas: [
+                      {
+                        morp: "string",
+                        speaker: "string",
+                        uid: "string",
+                        user: "string"
+                      }
+                    ]
+                  },
+                  m_KTierVer2: {
+                    dataType: "string",
+                    datas: [
+                      {
+                        speaker: "string",
+                        text: "string",
+                        time: "string",
+                        uid: "string"
+                      }
+                    ]
+                  },
+                  m_Option: {
+                    speakerList: [
+                      "string",
+                    ],
+                    stringOption: "string"
+                  },
+                  m_header: {
+                    arrID: [
+                      {
+                        age: "string",
+                        code: "string",
+                        corpus: "string",
+                        dateOfBirth: "string",
+                        edu: "string",
+                        group: "string",
+                        region: "string",
+                        role: "string",
+                        ses: "string",
+                        sex: "string"
+                      }
+                    ],
+                    arrParticipants: [
+                      "string"
+                    ],
+                    birthOfCHI: "string",
+                    birthPlaceOfCHI: "string",
+                    comment: "string",
+                    date: "string",
+                    language: "string",
+                    location: "string",
+                    media: "string",
+                    recording: "string",
+                    reviewer: "string",
+                    situation: "string",
+                    speechType: "string",
+                    transcriber: "string"
+                  },
+                  userDto: {
+                    fileName: "string",
+                    id: "string",
+                    user: "string"
+                  },
+                  version: "string"
+            }
+        ]
     }
     
     handleGetData = (data,brdno) => {
@@ -83,7 +160,6 @@ class TalkerList extends Component {
               }
   
         } catch (error) {
-              
               console.log(error);
         } 
     
@@ -97,7 +173,6 @@ class TalkerList extends Component {
             })
         
     }
-
 
     handleSelectRow = (row) => {
         this.setState({selectedBoard: row});
@@ -115,13 +190,40 @@ class TalkerList extends Component {
             )
         
         return true;
-      }
+    }
+    
+    // kst 서버 연동 
+    handleKSTSubmit = async (e) => {
+        e.preventDefault();
+        console.log("kst 서버 연동 in talkerList");
+
+        console.log(this.state.boards);
+
+        // const { KStars } = this.state;
+        // console.log("here is >> ",KStars);
+
+        // try {
+        //      const response = await Axios.post("/cosmos/kStars/create/kst", 
+        //         KStars,
+        //         {
+        //             headers: {
+        //                 "Content-type": "application/json",
+        //             },
+        //     });
+        //     console.log(response);
+
+        // } catch (error) {
+        //     alert(error);
+        //     console.log(error);
+        // }
+
+    }
     
   
 
     render() {
         const { boards, selectedBoard } = this.state;
-        //console.log(boards)
+        const { handleKSTSubmit } = this;
 
         return (
             <div>
@@ -156,6 +258,11 @@ class TalkerList extends Component {
                     }
                 {/* 전사창 end */}
                 </Grid>
+
+                {/* kst파일 서버 연동 */}
+                <Button variant="contained" color="primary" onClick={handleKSTSubmit} style={{marginTop: 30, }}>
+                    kst파일 서버 연동 
+                </Button>
             </div>
         );
     }

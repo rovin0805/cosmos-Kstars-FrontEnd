@@ -21,13 +21,13 @@ class HeaderManager extends Component {
         KStars :[
             {
                 Version: "",
-                Option: {
-                    SpeakerList: [],
-                    SpeakerOption: "",
+                m_Option: {
+                    speakerList: [],
+                    speakerOption: "",
                 },
-                Header: {
-                    SpeechType: "",
-                    Participants: [],
+                m_header: {
+                    speechType: "",
+                    arrParticipants: [],
                     BirthPlaceOfCHI: "",
                     Location: "",
                     Situation: "",
@@ -35,38 +35,60 @@ class HeaderManager extends Component {
                     Transcriber: "",
                     Reviewer: "",
                     Comment: "",
-                    ID :[
+                    arrID :[
                         {
-                            IDCorpus: "",
-                            IDCode: "",
-                            IDDateOfBirth: "",
-                            IDAge: "",
-                            IDSex: "",
-                            IDGroup: "",
-                            IDRegion: "",
-                            IDSES: "",
-                            IDEdu: "",
-                            IDRole: "",
+                            Corpus: "",
+                            Code: "",
+                            DateOfBirth: "",
+                            Age: "",
+                            Sex: "",
+                            Group: "",
+                            Region: "",
+                            SES: "",
+                            Edu: "",
+                            Role: "",
                         },
                     ],
                 },
-                Tier: [
-                    {
-                        Data: {
-                            Speaker: "",
-                            MEtri: "",
-                            MUser: "",
+                m_KTierVer2: {
+                    datas: [
+                        {
+                        uid: "", // 전사내용 리스트 인덱스 
+                        speaker: "", // 발화인 
+                        text: "", // 전사내용 
+                        time: "", // 시간초 
                         },
-                    },
-                ],
-                Audio: {
-                    AudioPath: "",
+                    ],
+                    dataType: "",
+                },
+                m_KTierMorpVer2: {
+                    datas: [
+                        {
+                        uid: "",
+                        speaker: "",
+                        morp: "",
+                        user: "",
+                        },
+                    ],
+                    dataType: "",
+                    
+                },
+                m_Audio: {
+                    AudioPath: [
+
+                    ],
                     AudioFileIndex: "",
                     AudioCurrentPositon: "",
+                },
+                userDTO: {
+                    id:"", 
+                    user: "", //guest
+                    fileName: "", 
                 }
-                    
             }
         ]
+
+        
     }
 
     //form state 관리 
@@ -139,8 +161,7 @@ class HeaderManager extends Component {
                             <Grid container direction="column" alignItems="baseline">
                                 <Typography style={{marginTop: 20, width: 100,}}>헤더정보</Typography>
                                 <Grid style={{marginLeft: 40,}}>
-                                    {"헤더정보입력 구현"}
-                                    {"asdf"+localStorage.audioFile}
+                                    {/* {"헤더정보입력 구현"} */}
                                 </Grid>
                             </Grid>
 
