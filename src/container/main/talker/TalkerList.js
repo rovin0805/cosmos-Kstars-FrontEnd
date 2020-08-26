@@ -42,14 +42,15 @@ class TalkerList extends Component {
         ],
         selectedBoard:{},
 
-        KStars :[
+        KSTProject :
             {
                 m_Audio: {
-                    AudioCurrentPosition: 0,
-                    AudioFileIndex: 0,
-                    AudioPath: [
-                      "string"
-                    ]
+                    audioCurrentPosition: 0,
+                    audioFileIndex: 0,
+                    audioPath: [
+                      "string",
+                    ],
+                
                   },
                   m_KTierMorpVer2: {
                     dataType: "string",
@@ -111,13 +112,13 @@ class TalkerList extends Component {
                     transcriber: "string"
                   },
                   userDto: {
-                    fileName: "string",
-                    id: "string",
-                    user: "string"
+                    fileName: "test1",
+                    id: "",
+                    user: "guest"
                   },
                   version: "string"
             }
-        ]
+        
     }
     
     handleGetData = (data,brdno) => {
@@ -199,23 +200,24 @@ class TalkerList extends Component {
 
         console.log(this.state.boards);
 
-        // const { KStars } = this.state;
-        // console.log("here is >> ",KStars);
+        const { KSTProject } = this.state;
+        console.log("here is >> ",KSTProject);
 
-        // try {
-        //      const response = await Axios.post("/cosmos/kStars/create/kst", 
-        //         KStars,
-        //         {
-        //             headers: {
-        //                 "Content-type": "application/json",
-        //             },
-        //     });
-        //     console.log(response);
+        try {
+             const response = await Axios.post("/cosmos/kStars/create/kst", 
+             KSTProject,
+                {
+                    headers: {
+                        "Content-type": "application/json",
+                    },
+                    
+            });
+            console.log(response);
 
-        // } catch (error) {
-        //     alert(error);
-        //     console.log(error);
-        // }
+        } catch (error) {
+            alert(error);
+            console.log(error);
+        }
 
     }
     
