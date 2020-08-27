@@ -8,6 +8,7 @@ import Axios from 'axios';
 import TalkerChips from './TalkerChips';
 import Waveform from '../waveform/Waveform';
 
+
 /*
 TalkerList 컴포넌트
 
@@ -32,13 +33,12 @@ class TalkerList extends Component {
         maxNo: 1,
         boards: [
             {
-                brdno: 1,
+                brdno: 0,
                 talker:'코스모스', 
                 text: '코스모스는 가을에 피어요.', 
                 analysisType:'morpAPI', 
                 analysisResult:'',
             },
-         
         ],
         selectedBoard:{},
 
@@ -48,7 +48,7 @@ class TalkerList extends Component {
                     audioCurrentPosition: 0,
                     audioFileIndex: 0,
                     audioPath: [
-                      "string",
+                      localStorage.audioFile,
                     ],
                 
                   },
@@ -60,18 +60,18 @@ class TalkerList extends Component {
                         speaker: "string",
                         uid: "string",
                         user: "string"
-                      }
+                      },
                     ]
                   },
                   m_KTierVer2: {
-                    dataType: "string",
+                    dataType: "",
                     datas: [
                       {
-                        speaker: "string",
-                        text: "string",
-                        time: "string",
-                        uid: "string"
-                      }
+                        speaker: "",
+                        text: "",
+                        time: "",
+                        uid: 0
+                      },
                     ]
                   },
                   m_Option: {
@@ -112,9 +112,9 @@ class TalkerList extends Component {
                     transcriber: "string"
                   },
                   userDto: {
-                    fileName: "test1",
+                    fileName: localStorage.projectName,
                     id: "",
-                    user: "guest"
+                    user: ""
                   },
                   version: "string"
             }
@@ -122,8 +122,6 @@ class TalkerList extends Component {
     }
     
     handleGetData = (data,brdno) => {
-       console.log("handleGetData에 값이 들어왔나요? ", data)
-
         if (!brdno) {            // Insert
             this.setState({
                 maxNo: this.state.maxNo+1,
@@ -141,9 +139,9 @@ class TalkerList extends Component {
         }
     }
 
+    // 분석결과 서버 연동 
     handleConveyData = async (e) => {
         e.preventDefault();
-        console.log("서버 연동 함수 호출");
         const { boards } =this.state;
   
         try {
@@ -153,9 +151,7 @@ class TalkerList extends Component {
             const { status, data } = response;
   
             if (status === 200) {
-              //서버에서 넘어온 값들 
-              console.log("값이 성공적으로 넘어왔습니다.",data)
-              //const { state } = this;
+              console.log(data);
               this.setState({boards: data}, () => console.log(this.state)); 
              
               }
@@ -167,8 +163,7 @@ class TalkerList extends Component {
     }
 
     handleRemove = (brdno) => {
-    
-        if(brdno !== '예시')
+        if(brdno !== 0)
             this.setState({
                 boards: this.state.boards.filter(row => (row.brdno !== brdno) )             
             })
@@ -181,46 +176,83 @@ class TalkerList extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         let boards = nextState.boards;
-        
-            boards.map(row =>
-                (
-                <div>
-                {/* <TalkerItem key={row.brdno} row={row} onRemove={this.handleRemove} onSelectRow={this.handleSelectRow}/> */}
-                <TalkerChips chipData={row.analysisResult}/>
-                    </div>)
-            )
+        boards.map(row =>
+          (
+          <div>
+          {/* <TalkerItem key={row.brdno} row={row} onRemove={this.handleRemove} onSelectRow={this.handleSelectRow}/> */}
+          <TalkerChips chipData={row.analysisResult}/>
+              </div>)
+      )
+
         
         return true;
     }
+
+    // kst 서버 연동 데이터 호출 - GUEST
+    handleProjectGuestData = () => {
+
+      // boards 값에서 newDatas 추출 
+      const newDatas = this.state.boards.map(data => {
+        return {
+          speaker: data.talker,
+          text: data.text,
+          time: "string",
+          uid: data.brdno,
+        }
+      });
+
+      this.setState({
+       ...this.state,
+       KSTProject: {
+         ...this.state.KSTProject,
+         m_KTierVer2: {
+           ...this.state.KSTProject.m_KTierVer2,
+           datas: newDatas,
+         },
+         userDto: {
+           ...this.state.KSTProject.userDto,
+           user: "guest",
+         }
+       }
+      }, () => {
+        console.log("handleProjectData completed >> ",this.state.KSTProject);
+      });
+
+      return true;
+    }
+
     
     // kst 서버 연동 
     handleKSTSubmit = async (e) => {
         e.preventDefault();
-        console.log("kst 서버 연동 in talkerList");
+        
+        const IsData = await this.handleProjectGuestData();
 
-        console.log(this.state.boards);
+        if(IsData){
+          const { KSTProject } = this.state;
+          console.log("handleKSTSubmit >> ", KSTProject);
 
-        const { KSTProject } = this.state;
-        console.log("here is >> ",KSTProject);
+          try {
+              const response = await Axios.post("/cosmos/kStars/create/kst", 
+              KSTProject,
+                  {
+                      headers: {
+                          "Content-type": "application/json",
+                      },
+                      
+              });
+              console.log(response);
 
-        try {
-             const response = await Axios.post("/cosmos/kStars/create/kst", 
-             KSTProject,
-                {
-                    headers: {
-                        "Content-type": "application/json",
-                    },
-                    
-            });
-            console.log(response);
-
-        } catch (error) {
-            alert(error);
-            console.log(error);
+          } catch (error) {
+              alert(error);
+              console.log(error);
+          }
+        }
+        else {
+          alert("KST 데이터를 불러올 수 없습니다..");
         }
 
     }
-    
   
 
     render() {
@@ -240,8 +272,8 @@ class TalkerList extends Component {
                 {/* 파형창 end */}
 
                  {/* 입력창 start */}
-                 <Typography variant="h4">입력창</Typography>
-               <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData}/>
+                <Typography variant="h4">입력창</Typography>
+                <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData}/>
                {/* 입력창 end */}
 
                 {/* 전사창 start */}

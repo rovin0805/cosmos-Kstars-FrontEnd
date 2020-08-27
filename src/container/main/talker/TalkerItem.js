@@ -103,7 +103,7 @@ class TalkerItem extends Component {
                       </Grid>
                       {/* 발화내용 end */}
 
-                   {/* 삭제, 분석상세보기 버튼 start */}
+                    {/* 삭제, 분석상세보기 버튼 start */}
                     <Grid item sm={1}
                       
                       container

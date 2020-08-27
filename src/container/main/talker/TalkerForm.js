@@ -8,6 +8,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import useStyles from '../styles/TalkerFormCss';
 import Axios from 'axios';
+
 /*
 TalkerForm 컴포넌트
  사용자로부터 talker, text, analysisType 받아온다.
@@ -122,24 +123,28 @@ class TalkerForm extends Component {
         analysisType: analysisType,
       }
 
-    //   try {
-    //       const response = await Axios.post("/cosmos/kStars/analysis2", {
-    //           talker, text, analysisType
-    //       });
-    //       const { status, data } = response;
-    //       console.log("문장번호" + selectedBoard.brdno);
+      /*
+      형태소 분석 서버 연동 
 
-    //       if (status === 200) {
-    //         //서버에서 넘어온 값들 
-    //       this.props.onSaveData(data,selectedBoard.brdno); 
-    //       console.log("서버 작동 하나용?" , data);
-    // }
+      try {
+          const response = await Axios.post("/cosmos/kStars/analysis2", {
+              talker, text, analysisType
+          });
+          const { status, data } = response;
+          console.log("문장번호" + selectedBoard.brdno);
+
+          if (status === 200) {
+            //서버에서 넘어온 값들 
+          this.props.onSaveData(data,selectedBoard.brdno); 
+          console.log("서버 작동 하나용?" , data);
+    }
 
 
-    //   } catch (error) {
+      } catch (error) {
             
-    //         console.log(error);
-    //   } 
+            console.log(error);
+      } 
+      */
 
       this.props.onSaveData(data,selectedBoard.brdno); 
   
