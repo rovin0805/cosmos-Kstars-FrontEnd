@@ -117,6 +117,7 @@ class index extends Component {
                     </Grid>
                         <Grid xs="9">
                         <Input 
+                            required
                             type="file" 
                             name="audioFile" 
                             file={audioFile}

@@ -11,29 +11,66 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
+import Axios from "axios";
+
 
 class Intro extends Component {
     state = {
-        userLogin: {
-            Id: "",
-            Pw: "",
-        },
-
-
+        email: "",
+        password: "",
+        userToken: "",
+        IsLogin: false,
+    };
+    
+    handleValueChange = (e) => {
+        const nextState = {};
+        nextState[e.target.name] = e.target.value;
+        this.setState(nextState);
     }
+
+    handleFormSubmit = async (e) => {
+        e.preventDefault(); 
+        const { email, password, userToken } = this.state;
+
+        try {
+            const response = await Axios.post("/cosmos/kStars/signIn", {
+                    email: email, 
+                    password: password
+            });
+            const { status, data } = response;
+
+            if (status === 200) {
+                this.setState({
+                    userToken: response.data,
+                    IsLogin: true,
+                });
+                console.log(data);
+                localStorage.setItem("userToken", userToken);
+
+            }
+            console.log(response);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     render() {
         const classes = useStyles;
+        const { handleFormSubmit, handleValueChange } = this;
+        const { email, password, IsLogin} = this.state;
+
         return (
             <div>
                 <Container style={{marginTop:150, }} component="main" maxWidth="xs">
                     <div className={classes.paper}>
                         {/* 웹 서비스 명 */}
                         <Typography component="h1" variant="h2" align="center">
-                        KSTARS
+                            KSTARS
                         </Typography>
 
                         {/* 로그인 폼 */}
-                        <form className={classes.form} noValidate>
+                        <form className={classes.form} noValidate onSubmit={handleFormSubmit}>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -42,7 +79,8 @@ class Intro extends Component {
                             id="email"
                             label="Email Address"
                             name="email"
-                            autoComplete="email"
+                            value={email}
+                            onChange={handleValueChange}
                             autoFocus
                         />
                         <TextField
@@ -54,13 +92,10 @@ class Intro extends Component {
                             label="Password"
                             type="password"
                             id="password"
-                            autoComplete="current-password"
+                            value={password}
+                            onChange={handleValueChange}
                         />
-                        {/* <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        /> */}
-                        <Link to={"/main"}>
+                        {IsLogin && <Link to={"/start"}> 
                             <Button
                                 type="submit"
                                 fullWidth
@@ -71,9 +106,10 @@ class Intro extends Component {
                                 Sign In
                             </Button>
                         </Link>
+                        }
 
                         {/* 회원가입으로 */}
-                        <Grid container >
+                        <Grid container style={{marginTop: 10}}>
                             <Grid item xs>
                             <Link href="#" variant="body2">
                                 Forgot password?
@@ -95,7 +131,7 @@ class Intro extends Component {
                                 color="primary"
                                 style={{marginTop: 30,}}
                             >
-                                GUEST로 이용하기 ->
+                                {"GUEST로 이용하기 ->"}
                             </Button>
                         </Link>
 
