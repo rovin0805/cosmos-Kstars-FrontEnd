@@ -16,7 +16,7 @@ class index extends Component {
         projectName: "",
         audioFile: null,
         convertToLink: "",
-        isLoading: false,
+        IsLoading: false,
     }
 
     // form state 관리 
@@ -33,7 +33,7 @@ class index extends Component {
         });
     }
 
-    // handleFormSubmit
+    // 서버 연동  
     handleFormSubmit = async (e) => {
         e.preventDefault();
         
@@ -55,11 +55,17 @@ class index extends Component {
 
             this.setState({
                 convertToLink: response.data,
-                isLoading: true,
+                IsLoading: true,
             });
 
             localStorage.setItem("projectName", this.state.projectName);
             localStorage.setItem("audioFile", this.state.convertToLink);
+
+            if(localStorage.projectName){
+                this.setState({
+                    IsLoading: true,
+                })
+            }
             
         } catch (err) {
             console.log(err);
@@ -67,9 +73,17 @@ class index extends Component {
 
     }
 
+    componentDidUpdate(prevProps, prevState){
+        const { history } = this.props;
+        const { IsLoading } = this.state;
+
+        if(IsLoading){
+          history.push('/start/header');
+        }
+      }
 
     render() {
-        const { projectName, audioFile, isLoading } = this.state;
+        const { projectName, audioFile } = this.state;
         const { handleValueChange, handleFileInput, handleFormSubmit } = this;
 
         return (
@@ -132,8 +146,7 @@ class index extends Component {
                     {/* form action */}
                     <Grid>
                         <Link to="/start"><Button variant="outlined" color="primary">이전</Button></Link>
-                        {isLoading && <Link to="/start/header"><Button type="submit" variant="outlined" color="primary">헤더 정보 입력 페이지로 이동</Button></Link>}
-                        {!isLoading && <Button type="submit" variant="outlined" color="primary">헤더 정보 입력 페이지로 이동</Button> }
+                        <Button type="submit" variant="outlined" color="primary">헤더 정보 입력 페이지로 이동</Button>
                     </Grid>
             </form>
             

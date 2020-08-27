@@ -65,7 +65,7 @@ class TalkerForm extends Component {
     if(localStorage.textBefore === text){
       localStorage.setItem("textStatus", "NOTENTERED");
       this.setState({
-        timerCount: 1000*6,
+        timerCount: 1000*60,
       });
 
     }

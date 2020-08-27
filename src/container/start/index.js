@@ -5,13 +5,11 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import {Link} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import useStyles from './headerManager/styles/useStyles';
 
 
 
 class index extends Component {
     render() {
-        const classes = useStyles;
 
         return (
             <div>
@@ -20,7 +18,7 @@ class index extends Component {
                     <Typography component="h1" variant="h2" align="center">
                         KSTARS
                     </Typography>
-
+                    {"userToken >> " + localStorage.userToken}
                     {/* select button */}
                     <Grid container spacing={2} style={{marginTop:30, }}>
                         <Grid item xs="6">

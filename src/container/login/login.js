@@ -18,7 +18,6 @@ class Intro extends Component {
     state = {
         email: "",
         password: "",
-        userToken: "",
         IsLogin: false,
     };
     
@@ -28,37 +27,46 @@ class Intro extends Component {
         this.setState(nextState);
     }
 
+    // 서버 연동 
     handleFormSubmit = async (e) => {
         e.preventDefault(); 
-        const { email, password, userToken } = this.state;
+        const { email, password } = this.state;
 
         try {
             const response = await Axios.post("/cosmos/kStars/signIn", {
                     email: email, 
                     password: password
             });
-            const { status, data } = response;
+            
+            console.log(response.data);
 
-            if (status === 200) {
+            localStorage.setItem("userToken", response.data);
+            
+            if(localStorage.userToken){
                 this.setState({
-                    userToken: response.data,
                     IsLogin: true,
                 });
-                console.log(data);
-                localStorage.setItem("userToken", userToken);
-
             }
-            console.log(response);
 
         } catch (error) {
             console.log(error);
         }
     }
 
+    componentDidUpdate(prevProps, prevState){
+        const { history } = this.props;
+        const { IsLogin } = this.state;
+
+        console.log("componentDidUpdate >> ", IsLogin)
+        if(IsLogin){
+          history.push('/start');
+        }
+      }
+
     render() {
         const classes = useStyles;
         const { handleFormSubmit, handleValueChange } = this;
-        const { email, password, IsLogin} = this.state;
+        const { email, password } = this.state;
 
         return (
             <div>
@@ -95,18 +103,18 @@ class Intro extends Component {
                             value={password}
                             onChange={handleValueChange}
                         />
-                        {IsLogin && <Link to={"/start"}> 
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="primary"
-                                className={classes.submit}
+
+
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
                             >
-                                Sign In
-                            </Button>
-                        </Link>
-                        }
+                            Sign In
+                        </Button>
+                        
 
                         {/* 회원가입으로 */}
                         <Grid container style={{marginTop: 10}}>
