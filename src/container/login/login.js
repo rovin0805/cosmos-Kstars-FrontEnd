@@ -57,7 +57,6 @@ class Intro extends Component {
         const { history } = this.props;
         const { IsLogin } = this.state;
 
-        console.log("componentDidUpdate >> ", IsLogin)
         if(IsLogin){
           history.push('/start');
         }

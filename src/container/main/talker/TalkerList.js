@@ -41,6 +41,7 @@ class TalkerList extends Component {
             },
         ],
         selectedBoard:{},
+        IsUserToken: false,
 
         KSTProject :
             {
@@ -120,6 +121,15 @@ class TalkerList extends Component {
             }
         
     }
+
+    componentDidMount () {
+      
+      if(localStorage.userToken){
+        this.setState({
+          IsUserToken: true,
+        })
+      }
+    }
     
     handleGetData = (data,brdno) => {
         if (!brdno) {            // Insert
@@ -188,7 +198,7 @@ class TalkerList extends Component {
         return true;
     }
 
-    // kst 서버 연동 데이터 호출 - GUEST
+    // kst 서버 연동 데이터 호출 - GUEST 이용자 
     handleProjectGuestData = () => {
 
       // boards 값에서 newDatas 추출 
@@ -215,7 +225,41 @@ class TalkerList extends Component {
          }
        }
       }, () => {
-        console.log("handleProjectData completed >> ",this.state.KSTProject);
+        console.log("handleProjectGuestData completed >> ",this.state.KSTProject);
+      });
+
+      return true;
+    }
+
+
+    // kst 서버 연동 데이터 호출 - Login 이용자 
+    handleProjectUserData = () => {
+
+      // boards 값에서 newDatas 추출 
+      const newDatas = this.state.boards.map(data => {
+        return {
+          speaker: data.talker,
+          text: data.text,
+          time: "string",
+          uid: data.brdno,
+        }
+      });
+
+      this.setState({
+       ...this.state,
+       KSTProject: {
+         ...this.state.KSTProject,
+         m_KTierVer2: {
+           ...this.state.KSTProject.m_KTierVer2,
+           datas: newDatas,
+         },
+         userDto: {
+           ...this.state.KSTProject.userDto,
+           user: "user",
+         }
+       }
+      }, () => {
+        console.log("handleProjectUserData completed >> ",this.state.KSTProject);
       });
 
       return true;
@@ -225,23 +269,47 @@ class TalkerList extends Component {
     // kst 서버 연동 
     handleKSTSubmit = async (e) => {
         e.preventDefault();
-        
-        const IsData = await this.handleProjectGuestData();
+        const { IsUserToken } = this.state;
+       
+        const IsData = IsUserToken ? await this.handleProjectUserData() : await this.handleProjectGuestData();
 
+        console.log(" is data? ", IsData);
+        console.log(" what is kst? ", this.state.KSTProject);
+        
         if(IsData){
           const { KSTProject } = this.state;
-          console.log("handleKSTSubmit >> ", KSTProject);
 
-          try {
-              const response = await Axios.post("/cosmos/kStars/create/kst", 
+          if(!IsUserToken){
+            try {
+                const response = await Axios.post("/cosmos/kStars/create/kst", 
+                KSTProject,
+                    {
+                        headers: {
+                            "Content-type": "application/json",
+                        },
+                        
+                });
+                console.log(response);
+                alert("KST 파일 생성이 정상적으로 처리되었습니다.");
+
+
+            } catch (error) {
+                alert(error);
+                console.log(error);
+            }
+          }
+          else if(IsUserToken){
+            try {
+              const response = await Axios.post("/cosmos/kStars/create/kst/user", 
               KSTProject,
                   {
                       headers: {
-                          "Content-type": "application/json",
+                          "token": localStorage.userToken,
                       },
                       
               });
               console.log(response);
+              alert("KST 파일 생성이 정상적으로 처리되었습니다.");
 
           } catch (error) {
               alert(error);
@@ -249,10 +317,14 @@ class TalkerList extends Component {
           }
         }
         else {
-          alert("KST 데이터를 불러올 수 없습니다..");
+          alert("KST에 전송될 데이터를 불러올 수 없습니다..");
         }
+      
+      }
+
 
     }
+
   
 
     render() {
@@ -271,6 +343,7 @@ class TalkerList extends Component {
                 <Waveform />
                 {/* 파형창 end */}
 
+                {"token >> " + this.state.IsUserToken}
                  {/* 입력창 start */}
                 <Typography variant="h4">입력창</Typography>
                 <TalkerForm selectedBoard={selectedBoard} onSaveData={this.handleGetData}/>
